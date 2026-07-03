@@ -203,7 +203,13 @@ summariseDiscontinuationAsSurvival <- function(cohort,
           omopgenerics::addSettings(settingsColumn = "competing_outcome") |>
           dplyr::mutate(
             variable_name = paste0(
-              "Survival probability of ", .data$variable_level, dplyr::if_else(
+              dplyr::if_else(
+                is.null(competingOutcomeCohortTable),
+                "Survival probability of ",
+                "Cumulative incidence of "
+              ),
+              .data$variable_level,
+              dplyr::if_else(
                 .data$variable_level == .env$discontinuationCohort,
                 " (Outcome)",
                 " (Competing outcome)"

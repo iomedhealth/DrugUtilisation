@@ -90,16 +90,22 @@ erafyCohort <- function(cohort,
   return(cdm[[name]])
 }
 cohortSubset <- function(cohort, cohortId, name) {
-  cohort |>
-    dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
-    dplyr::compute(name = name, temporary = FALSE) |>
-    omopgenerics::newCohortTable(
-      cohortSetRef = omopgenerics::settings(cohort) |>
-        dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
-      cohortAttritionRef = omopgenerics::attrition(cohort) |>
-        dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
-      cohortCodelistRef = attr(cohort, "cohort_codelist") |>
-        dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
-      .softValidation = FALSE
-    )
+  if (length(cohortId) == 0) {
+    cdm <- omopgenerics::cdmReference(table = cohort) |>
+      omopgenerics::emptyCohortTable(name = name)
+    cdm[[name]]
+  } else {
+    cohort |>
+      dplyr::filter(.data$cohort_definition_id %in% .env$cohortId) |>
+      dplyr::compute(name = name, temporary = FALSE) |>
+      omopgenerics::newCohortTable(
+        cohortSetRef = attr(cohort, "cohort_set") |>
+          dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
+        cohortAttritionRef = attr(cohort, "cohort_attrition") |>
+          dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
+        cohortCodelistRef = attr(cohort, "cohort_codelist") |>
+          dplyr::filter(.data$cohort_definition_id %in% .env$cohortId),
+        .softValidation = TRUE
+      )
+  }
 }

@@ -185,7 +185,8 @@ summariseDrugUtilisation <- function(cohort,
       cdm$concept |>
         dplyr::filter(.data$concept_class_id == "Ingredient") |>
         dplyr::select("ingredient_id" = "concept_id", "ingredient" = "concept_name") |>
-        dplyr::collect(),
+        dplyr::collect() |>
+        dplyr::mutate(ingredient_id = as.numeric(.data$ingredient_id)),
       by = "ingredient_id"
     ) |>
     dplyr::select(-c(dplyr::starts_with("additional"))) |>

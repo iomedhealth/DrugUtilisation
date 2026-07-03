@@ -459,10 +459,10 @@ plotProportionOfPatientsCovered <- function(result,
 #' }
 #'
 plotDiscontinuationAsSurvival <- function(result,
-                                facet = "cohort_name",
-                                colour = c("variable_name", strataColumns(result)),
-                                ribbon = TRUE,
-                                style = NULL) {
+                                          facet = "cohort_name",
+                                          colour = c("variable_name", strataColumns(result)),
+                                          ribbon = TRUE,
+                                          style = NULL) {
   rlang::check_installed("ggplot2", reason = "for plot functions")
   rlang::check_installed("scales", reason = "for plot functions")
   rlang::check_installed("visOmopResults", reason = "for plot functions")
@@ -476,7 +476,7 @@ plotDiscontinuationAsSurvival <- function(result,
     omopgenerics::filterSettings(
       .data$result_type == "summarise_discontinuation_as_survival"
     ) |>
-    dplyr::filter(stringr::str_starts(.data$variable_name, "Survival"))
+    dplyr::filter(stringr::str_starts(.data$variable_name, "Survival|Cumulative"))
 
   if (nrow(result) == 0) {
     cli::cli_warn("No discontinuation results found")
@@ -490,6 +490,12 @@ plotDiscontinuationAsSurvival <- function(result,
     dplyr::mutate(time = as.numeric(.data$variable_level)) |>
     dplyr::select(!dplyr::any_of(c("variable_level")))
 
+  if (identical(unique(result$competing_outcome), "none")) {
+    title <- "Survival probability"
+  } else {
+    title <- "Cumulative incidence"
+  }
+
   plotEvolution(
     result = result,
     facet = facet,
@@ -500,7 +506,7 @@ plotDiscontinuationAsSurvival <- function(result,
     y = "estimate",
     ymin = "estimate_95CI_lower",
     ymax = "estimate_95CI_upper",
-    yLab = "Survival probability"
+    yLab = title
   )
 }
 
