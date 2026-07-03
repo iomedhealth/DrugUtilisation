@@ -1,4 +1,10 @@
 
+# DrugUtilisation 1.2.1
+
+* Fix erafyCohort for Sql Server by @catalamarti in #760
+* Fix casting issue in Sql Server by @catalamarti in #769
+* Fix cumulative incidence table and plots by @catalamarti in #770
+
 # DrugUtilisation 1.2.0
 
 * add tutorial in the website by @catalamarti in #751

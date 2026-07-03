@@ -10,10 +10,7 @@ test_that("test inputs", {
   expect_no_error(generateDrugUtilisationCohortSet(cdm, "dus", list(acetaminophen = 1)))
   cdmNew <- generateDrugUtilisationCohortSet(cdm, "dus", list(acetaminophen = 1125360))
   expect_true("cohort_table" %in% class(cdmNew$dus))
-  expect_true(all(c(
-    "cohort_definition_id", "subject_id", "cohort_start_date", "cohort_end_date"
-  ) %in% colnames(cdmNew$dus)))
-  expect_true(length(colnames(cdmNew$dus)) == 4)
+  expect_identical(colnames(cdmNew$dus), omopgenerics::cohortColumns("cohort"))
   expect_error(generateDrugUtilisationCohortSet(
     cdm, "dus", list(acetaminophen = 1125360),
     gapEra = "7"

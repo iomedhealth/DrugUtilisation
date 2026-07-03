@@ -362,7 +362,7 @@ tableDiscontinuationAsSurvival <- function(result,
   if (gapSummary) {
     modifyResults = \(x, ...) {
       x |>
-        dplyr::filter(!stringr::str_starts(.data$variable_name, "Survival"))
+        dplyr::filter(!stringr::str_starts(.data$variable_name, "Survival|Cumulative"))
     }
   } else {
     modifyResults = \(x, ...) {
