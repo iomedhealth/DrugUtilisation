@@ -15,7 +15,7 @@ summariseIndication(
   indexDate = "cohort_start_date",
   mutuallyExclusive = TRUE,
   censorDate = NULL,
-  notInObservation = "include"
+  inObservation = TRUE
 )
 }
 \arguments{
@@ -24,16 +24,16 @@ summariseIndication(
 \item{strata}{A list of variables to stratify results. These variables
 must have been added as additional columns in the cohort table.}
 
-\item{indicationCohortName}{Name of the cohort table with potential
+\item{indicationCohortName}{Name of the cohort table containing potential
 indications.}
 
 \item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
 will be included.}
 
-\item{indicationCohortId}{The target cohort ID to add indication. If NULL all
-cohorts will be considered.}
+\item{indicationCohortId}{Cohort definition IDs of the indications of
+interest. If \code{NULL}, all cohorts in \code{indicationCohortName} are included.}
 
-\item{indicationWindow}{The time window over which to identify indications.}
+\item{indicationWindow}{Time windows over which to identify indications.}
 
 \item{unknownIndicationTable}{Tables in the OMOP CDM to search for unknown
 indications.}
@@ -41,14 +41,16 @@ indications.}
 \item{indexDate}{Name of a column that indicates the date to start the
 analysis.}
 
-\item{mutuallyExclusive}{Whether to report indications as mutually exclusive
-or report them as independent results.}
+\item{mutuallyExclusive}{Whether intersections should be mutually exclusive.
+If \code{TRUE}, cohort combinations are reported as mutually exclusive categories;
+if \code{FALSE}, each cohort is reported independently.}
 
 \item{censorDate}{Name of a column that indicates the date to stop the
 analysis, if NULL end of individuals observation is used.}
 
-\item{notInObservation}{Whether to include the individuals not in observation
-as a separate category ("include") or to exclude them ("exclude").}
+\item{inObservation}{Whether to restrict the analysis to individuals in
+observation. If \code{TRUE}, individuals not in observation are excluded. If
+\code{FALSE}, they are included as a separate category.}
 }
 \value{
 A summarised result

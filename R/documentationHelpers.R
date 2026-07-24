@@ -7,6 +7,15 @@
 #' @keywords internal
 NULL
 
+#' Helper for consistent documentation of `restrictToFirstDiscontinuation`.
+#'
+#' @param restrictToFirstDiscontinuation Whether to consider only the first
+#' discontinuation episode or all of them.
+#'
+#' @name restrictToFirstDiscontinuationDoc
+#' @keywords internal
+NULL
+
 #' Helper for consistent documentation of `table`.
 #'
 #' @param type Character string specifying the desired output table format. See
@@ -177,6 +186,147 @@ NULL
 #' analysis, if NULL end of individuals observation is used.
 #'
 #' @name censorDateDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `inObservation`.
+#'
+#' @param inObservation Whether to restrict the analysis to individuals in
+#' observation. If `TRUE`, individuals not in observation are excluded. If
+#' `FALSE`, they are included as a separate category.
+#'
+#' @name inObservationDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `indicationCohortName`.
+#'
+#' @param indicationCohortName Name of the cohort table containing potential
+#' indications.
+#'
+#' @name indicationCohortNameDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `indicationCohortId`.
+#'
+#' @param indicationCohortId Cohort definition IDs of the indications of
+#' interest. If `NULL`, all cohorts in `indicationCohortName` are included.
+#'
+#' @name indicationCohortIdDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `indicationWindow`.
+#'
+#' @param indicationWindow Time windows over which to identify indications.
+#'
+#' @name indicationWindowDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `unknownIndicationTable`.
+#'
+#' @param unknownIndicationTable Tables in the OMOP CDM to search for unknown
+#' indications.
+#'
+#' @name unknownIndicationTableDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `treatmentCohortName`.
+#'
+#' @param treatmentCohortName Name of the cohort table containing the treatments
+#' of interest.
+#'
+#' @name treatmentCohortNameDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `treatmentCohortId`.
+#'
+#' @param treatmentCohortId Cohort definition IDs of the treatments of interest.
+#' If `NULL`, all cohorts in `treatmentCohortName` are included.
+#'
+#' @name treatmentCohortIdDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `window`.
+#'
+#' @param window Time windows over which to identify treatments.
+#'
+#' @name windowDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `mutuallyExclusive`.
+#'
+#' @param mutuallyExclusive Whether intersections should be mutually exclusive.
+#' If `TRUE`, cohort combinations are reported as mutually exclusive categories;
+#' if `FALSE`, each cohort is reported independently.
+#'
+#' @name mutuallyExclusiveDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `subsetCohort`.
+#'
+#' @param subsetCohort Cohort table to subset.
+#'
+#' @name subsetCohortDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `subsetCohortId`.
+#'
+#' @param subsetCohortId Cohort definition IDs to use from `subsetCohort`.
+#'
+#' @name subsetCohortIdDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `switchCohortTable`.
+#'
+#' @param switchCohortTable A cohort table in the CDM containing possible
+#' alternative treatments.
+#'
+#' @name switchCohortTableDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `switchCohortId`.
+#'
+#' @param switchCohortId Cohort definition IDs to use from `switchCohortTable`.
+#' If `NULL`, all cohort definition IDs are included.
+#'
+#' @name switchCohortIdDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of drug-restart `followUpDays`.
+#'
+#' @param followUpDays Number of days to follow up. Multiple values are allowed.
+#'
+#' @name drugRestartFollowUpDaysDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `incident`.
+#'
+#' @param incident Whether switch treatment must be incident, starting after
+#' discontinuation. If `FALSE`, it may start before discontinuation and continue
+#' beyond it.
+#'
+#' @name incidentDoc
+#' @keywords internal
+NULL
+
+#' Helper for consistent documentation of `ribbon`.
+#'
+#' @param ribbon Whether to plot a ribbon with the confidence intervals.
+#'
+#' @name ribbonDoc
 #' @keywords internal
 NULL
 

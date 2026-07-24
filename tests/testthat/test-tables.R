@@ -59,6 +59,7 @@ test_that("tableIndication works", {
   # default
   default <- tableIndication(result)
   expect_true("gt_tbl" %in% class(default))
+  expect_true("in_observation" %in% eval(formals(tableIndication)$hide))
 
   tib <- tableIndication(result, header = "variable", groupColumn = "cdm_name")
 
@@ -458,6 +459,7 @@ test_that("tableTreatment", {
     )
 
   expect_no_error(x <- tableTreatment(result))
+  expect_true("in_observation" %in% eval(formals(tableTreatment)$hide))
 
   outputFolder <- tempdir()
   omopgenerics::exportSummarisedResult(

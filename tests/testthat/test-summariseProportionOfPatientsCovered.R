@@ -164,6 +164,37 @@ test_that("multiple cohort entries", {
   dropCreatedTables(cdm = cdm)
 })
 
+test_that("default follow-up includes gaps between cohort entries", {
+  skip_on_cran()
+
+  cdm <- mockDrugUtilisation(
+    dus_cohort = dplyr::tibble(
+      cohort_definition_id = 1,
+      subject_id = c(1, 1),
+      cohort_start_date = as.Date(c("2000-01-01", "2000-04-01")),
+      cohort_end_date = as.Date(c("2000-01-05", "2000-04-05"))
+    ),
+    observation_period = dplyr::tibble(
+      observation_period_id = 1,
+      person_id = 1,
+      observation_period_start_date = as.Date("2000-01-01"),
+      observation_period_end_date = as.Date("2000-04-10"),
+      period_type_concept_id = 0
+    )
+  ) |>
+    copyCdm()
+
+  ppc <- cdm$dus_cohort |>
+    summariseProportionOfPatientsCovered()
+
+  expectedFollowUp <- as.integer(
+    as.Date("2000-04-05") - as.Date("2000-01-01")
+  )
+  expect_equal(max(as.integer(ppc$additional_level)), expectedFollowUp)
+
+  dropCreatedTables(cdm = cdm)
+})
+
 test_that("multiple cohorts", {
   skip_on_cran()
 

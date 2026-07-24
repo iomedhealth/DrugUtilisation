@@ -14,22 +14,22 @@ summariseTreatment(
   indexDate = "cohort_start_date",
   censorDate = NULL,
   mutuallyExclusive = FALSE,
-  notInObservation = "include"
+  inObservation = TRUE
 )
 }
 \arguments{
 \item{cohort}{A cohort_table object.}
 
-\item{window}{Time window over which to summarise the treatments.}
+\item{window}{Time windows over which to identify treatments.}
 
-\item{treatmentCohortName}{Name of a cohort in the cdm that contains the
-treatments of interest.}
+\item{treatmentCohortName}{Name of the cohort table containing the treatments
+of interest.}
 
 \item{cohortId}{A cohort definition id to restrict by. If NULL, all cohorts
 will be included.}
 
-\item{treatmentCohortId}{Cohort definition id of interest from
-treatmentCohortName.}
+\item{treatmentCohortId}{Cohort definition IDs of the treatments of interest.
+If \code{NULL}, all cohorts in \code{treatmentCohortName} are included.}
 
 \item{strata}{A list of variables to stratify results. These variables
 must have been added as additional columns in the cohort table.}
@@ -40,11 +40,13 @@ analysis.}
 \item{censorDate}{Name of a column that indicates the date to stop the
 analysis, if NULL end of individuals observation is used.}
 
-\item{mutuallyExclusive}{Whether to include mutually exclusive treatments or
-not.}
+\item{mutuallyExclusive}{Whether intersections should be mutually exclusive.
+If \code{TRUE}, cohort combinations are reported as mutually exclusive categories;
+if \code{FALSE}, each cohort is reported independently.}
 
-\item{notInObservation}{Whether to include the individuals not in observation
-as a separate category ("include") or to exclude them ("exclude").}
+\item{inObservation}{Whether to restrict the analysis to individuals in
+observation. If \code{TRUE}, individuals not in observation are excluded. If
+\code{FALSE}, they are included as a separate category.}
 }
 \value{
 A summary of treatments stratified by cohort_name and strata_name

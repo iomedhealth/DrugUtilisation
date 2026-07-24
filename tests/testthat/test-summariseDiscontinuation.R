@@ -51,7 +51,7 @@ test_that("summariseDiscontinuationAsSurvival works", {
         .data$estimate_name %in% c("number_records_count", "n_events_count")
       ) |>
       dplyr::pull("estimate_value"),
-    c("4", "3")
+    c("4", "2")
   )
   expect_identical(
     result |>
@@ -69,7 +69,7 @@ test_that("summariseDiscontinuationAsSurvival works", {
         .data$estimate_name == "n_events_count"
       ) |>
       dplyr::pull("estimate_value"),
-    c("0", "1", "1", "1")
+    c("0", "0", "1", "1")
   )
   expect_identical(
     result |>
@@ -78,7 +78,7 @@ test_that("summariseDiscontinuationAsSurvival works", {
         .data$estimate_name == "n_censor_count"
       ) |>
       dplyr::pull("estimate_value"),
-    c("0", "0", "0", "1")
+    c("0", "0", "0", "2")
   )
   expect_identical(
     result |>
@@ -87,7 +87,7 @@ test_that("summariseDiscontinuationAsSurvival works", {
         .data$estimate_name == "estimate"
       ) |>
       dplyr::pull("estimate_value"),
-    c("1", "0.75", "0.5", "0.25")
+    c("1", "1", "0.75", "0.5")
   )
 
   # plot and tables

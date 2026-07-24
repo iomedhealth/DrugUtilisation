@@ -17,21 +17,20 @@ addDrugRestart(
 \arguments{
 \item{cohort}{A cohort_table object.}
 
-\item{switchCohortTable}{A cohort table in the cdm that contains possible
+\item{switchCohortTable}{A cohort table in the CDM containing possible
 alternative treatments.}
 
-\item{switchCohortId}{The cohort ids to be used from switchCohortTable. If
-NULL all cohort definition ids are used.}
+\item{switchCohortId}{Cohort definition IDs to use from \code{switchCohortTable}.
+If \code{NULL}, all cohort definition IDs are included.}
 
-\item{followUpDays}{A vector of number of days to follow up. It can be
-multiple values.}
+\item{followUpDays}{Number of days to follow up. Multiple values are allowed.}
 
 \item{censorDate}{Name of a column that indicates the date to stop the
 analysis, if NULL end of individuals observation is used.}
 
-\item{incident}{Whether the switch treatment has to be incident (start after
-discontinuation) or not (it can start before the discontinuation and last
-till after).}
+\item{incident}{Whether switch treatment must be incident, starting after
+discontinuation. If \code{FALSE}, it may start before discontinuation and continue
+beyond it.}
 
 \item{nameStyle}{Character string to specify the nameStyle of the new columns.}
 }

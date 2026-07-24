@@ -9,6 +9,7 @@ summariseDiscontinuationAsSurvival(
   cohortId = NULL,
   followUpDays = Inf,
   censorDate = NULL,
+  restrictToFirstDiscontinuation = TRUE,
   strata = list(),
   competingOutcomeCohortTable = NULL,
   competingOutcomeCohortId = NULL,
@@ -27,6 +28,9 @@ upper bound Inf).}
 
 \item{censorDate}{if not NULL, an individual's follow up will be censored at
 the given date.}
+
+\item{restrictToFirstDiscontinuation}{Whether to consider only the first
+discontinuation episode or all of them.}
 
 \item{strata}{A list of variables to stratify results. These variables
 must have been added as additional columns in the cohort table.}
@@ -57,9 +61,11 @@ using the \href{https://darwin-eu.github.io/CohortSurvival/}{CohortSurvival}
 package. The function assumes that each cohort entry is a continuous
 treatment era. Discontinuation will be assessed as a survival analysis with
 index date: \emph{start of the drug treatment era} (\code{cohort_start_date}) and event
-of interest: \emph{end of the drug treatment era} (\code{cohort_end_date}). The analysis
-will use \code{estimateSingleEventSurvival()} or \code{estimateCompetingRiskSurvival()}
-depending if \code{competingOutcomeCohortTable} is provided or not.
+of interest: \emph{first day without exposure} (the day after
+\code{cohort_end_date}). An event is only recorded if the individual remains under
+observation on that day. The analysis will use
+\code{estimateSingleEventSurvival()} or \code{estimateCompetingRiskSurvival()} depending
+if \code{competingOutcomeCohortTable} is provided or not.
 }
 \examples{
 \donttest{

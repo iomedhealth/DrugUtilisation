@@ -37,7 +37,7 @@ considered in the same era.}
 
 \item{subsetCohort}{Cohort table to subset.}
 
-\item{subsetCohortId}{Cohort id to subset.}
+\item{subsetCohortId}{Cohort definition IDs to use from \code{subsetCohort}.}
 
 \item{numberExposures}{Whether to include 'number_exposures' (number of drug
 exposure records between indexDate and censorDate).}

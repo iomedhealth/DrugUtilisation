@@ -19,11 +19,13 @@ addTreatment(
 \arguments{
 \item{cohort}{A cohort_table object.}
 
-\item{treatmentCohortName}{Name of treatment cohort table}
+\item{treatmentCohortName}{Name of the cohort table containing the treatments
+of interest.}
 
-\item{treatmentCohortId}{target cohort Id to add treatment}
+\item{treatmentCohortId}{Cohort definition IDs of the treatments of interest.
+If \code{NULL}, all cohorts in \code{treatmentCohortName} are included.}
 
-\item{window}{time window of interests.}
+\item{window}{Time windows over which to identify treatments.}
 
 \item{indexDate}{Name of a column that indicates the date to start the
 analysis.}
@@ -31,8 +33,9 @@ analysis.}
 \item{censorDate}{Name of a column that indicates the date to stop the
 analysis, if NULL end of individuals observation is used.}
 
-\item{mutuallyExclusive}{Whether to consider mutually exclusive categories
-(one column per window) or not (one column per window and treatment).}
+\item{mutuallyExclusive}{Whether intersections should be mutually exclusive.
+If \code{TRUE}, cohort combinations are reported as mutually exclusive categories;
+if \code{FALSE}, each cohort is reported independently.}
 
 \item{nameStyle}{Name style for the treatment columns. By default:
 'treatment_\{window_name\}' (mutuallyExclusive = TRUE),

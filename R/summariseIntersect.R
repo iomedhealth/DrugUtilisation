@@ -28,19 +28,14 @@
 #' @inheritParams cohortDoc
 #' @inheritParams cohortIdDoc
 #' @inheritParams strataDoc
-#' @param indicationCohortName Name of the cohort table with potential
-#' indications.
-#' @param indicationCohortId The target cohort ID to add indication. If NULL all
-#' cohorts will be considered.
-#' @param indicationWindow The time window over which to identify indications.
-#' @param unknownIndicationTable Tables in the OMOP CDM to search for unknown
-#' indications.
+#' @inheritParams indicationCohortNameDoc
+#' @inheritParams indicationCohortIdDoc
+#' @inheritParams indicationWindowDoc
+#' @inheritParams unknownIndicationTableDoc
 #' @inheritParams indexDateDoc
-#' @param mutuallyExclusive Whether to report indications as mutually exclusive
-#' or report them as independent results.
+#' @inheritParams mutuallyExclusiveDoc
 #' @inheritParams censorDateDoc
-#' @param notInObservation Whether to include the individuals not in observation
-#' as a separate category ("include") or to exclude them ("exclude").
+#' @inheritParams inObservationDoc
 #'
 #' @return A summarised result
 #'
@@ -82,7 +77,7 @@ summariseIndication <- function(cohort,
                                 indexDate = "cohort_start_date",
                                 mutuallyExclusive = TRUE,
                                 censorDate = NULL,
-                                notInObservation = "include") {
+                                inObservation = TRUE) {
   res <- .summariseIntersect(
     cohort = cohort,
     cohortId = {{cohortId}},
@@ -94,7 +89,7 @@ summariseIndication <- function(cohort,
     unknownTable = unknownIndicationTable,
     indexDate = indexDate,
     censorDate = censorDate,
-    notInObservation = notInObservation,
+    inObservation = inObservation,
     nm = "indications"
   )
 
@@ -114,7 +109,7 @@ summariseIndication <- function(cohort,
         indication_cohort_name = indicationCohortName,
         index_date = indexDate,
         censor_date = as.character(censorDate %||% "observation_period_end_date"),
-        not_in_observation = notInObservation
+        in_observation = as.character(inObservation)
       )
     )
 }
@@ -123,18 +118,14 @@ summariseIndication <- function(cohort,
 #'
 #' @inheritParams cohortDoc
 #' @inheritParams cohortIdDoc
-#' @param window Time window over which to summarise the treatments.
-#' @param treatmentCohortName Name of a cohort in the cdm that contains the
-#'  treatments of interest.
-#' @param treatmentCohortId Cohort definition id of interest from
-#' treatmentCohortName.
+#' @inheritParams windowDoc
+#' @inheritParams treatmentCohortNameDoc
+#' @inheritParams treatmentCohortIdDoc
 #' @inheritParams strataDoc
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
-#' @param mutuallyExclusive Whether to include mutually exclusive treatments or
-#' not.
-#' @param notInObservation Whether to include the individuals not in observation
-#' as a separate category ("include") or to exclude them ("exclude").
+#' @inheritParams mutuallyExclusiveDoc
+#' @inheritParams inObservationDoc
 #'
 #' @return A summary of treatments stratified by cohort_name and strata_name
 #'
@@ -161,7 +152,7 @@ summariseTreatment <- function(cohort,
                                indexDate = "cohort_start_date",
                                censorDate = NULL,
                                mutuallyExclusive = FALSE,
-                               notInObservation = "include") {
+                               inObservation = TRUE) {
   res <- .summariseIntersect(
     cohort = cohort,
     cohortId = {{cohortId}},
@@ -173,7 +164,7 @@ summariseTreatment <- function(cohort,
     unknownTable = character(),
     indexDate = indexDate,
     censorDate = censorDate,
-    notInObservation = notInObservation,
+    inObservation = inObservation,
     nm = "medications"
   )
 
@@ -192,7 +183,7 @@ summariseTreatment <- function(cohort,
         treatment_cohort_name = treatmentCohortName,
         index_date = as.character(indexDate),
         censor_date = as.character(censorDate %||% "observation_period_end_date"),
-        not_in_observation = notInObservation
+        in_observation = as.character(inObservation)
       )
     )
 }
@@ -207,7 +198,7 @@ summariseTreatment <- function(cohort,
                                 unknownTable,
                                 indexDate,
                                 censorDate,
-                                notInObservation,
+                                inObservation,
                                 nm,
                                 call = parent.frame()) {
   # initial checks
@@ -221,7 +212,7 @@ summariseTreatment <- function(cohort,
   cohortTableId <- omopgenerics::validateCohortIdArgument(cohortTableId, cdm[[cohortTable]], call = call)
   window <- omopgenerics::validateWindowArgument(window, call = call)
   names(window) <- paste0("win", seq_along(window))
-  omopgenerics::assertChoice(notInObservation, c("include", "exclude"), length = 1)
+  omopgenerics::assertLogical(inObservation, length = 1, call = call)
 
   if (length(cohortTableId) > 5 & isTRUE(mutuallyExclusive)) {
     n <- length(cohortTableId)
@@ -267,7 +258,7 @@ summariseTreatment <- function(cohort,
   )
 
   # calculate percentage
-  if (notInObservation == "exclude") {
+  if (inObservation) {
     result <- result |>
       dplyr::filter(.data$variable_level != "not in observation")
   }
@@ -290,7 +281,7 @@ summariseTreatment <- function(cohort,
   extraLabs <- c(
     "unknown"[length(unknownTable) > 0],
     dplyr::if_else(nm == "indications", "none", "untreated"),
-    "not in observation"[notInObservation == "include"]
+    "not in observation"[!inObservation]
   )
   labels <- omopgenerics::settings(cdm[[cohortTable]]) |>
     dplyr::filter(.data$cohort_definition_id %in% .env$cohortTableId) |>
@@ -308,7 +299,7 @@ summariseTreatment <- function(cohort,
   return(result)
 }
 
-calculatePercentage <- function(result, notInObservation) {
+calculatePercentage <- function(result) {
   result <- result |>
     dplyr::mutate(count = as.integer(.data$estimate_value)) |>
     dplyr::select(!c("estimate_name", "estimate_value", "estimate_type"))
