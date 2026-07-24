@@ -7,7 +7,15 @@ test_that("test inputs", {
   expect_error(generateDrugUtilisationCohortSet(cdm = cdm))
   expect_error(generateDrugUtilisationCohortSet(cdm, "dus", 1))
   expect_error(generateDrugUtilisationCohortSet(cdm, "dus", list(1)))
-  expect_no_error(generateDrugUtilisationCohortSet(cdm, "dus", list(acetaminophen = 1)))
+  expect_no_error(
+    cdmEmpty <- generateDrugUtilisationCohortSet(
+      cdm, "dus_empty", list(acetaminophen = -1)
+    )
+  )
+  expect_identical(
+    colnames(cdmEmpty$dus_empty),
+    omopgenerics::cohortColumns("cohort")
+  )
   cdmNew <- generateDrugUtilisationCohortSet(cdm, "dus", list(acetaminophen = 1125360))
   expect_true("cohort_table" %in% class(cdmNew$dus))
   expect_identical(colnames(cdmNew$dus), omopgenerics::cohortColumns("cohort"))

@@ -10,7 +10,10 @@ test_that("test summariseTreatment", {
       )
   )
   expect_true(inherits(x, "summarised_result"))
-  expect_true(all(x$variable_level |> unique() == c("cohort_1", "cohort_2", "cohort_3", "untreated", "not in observation")))
+  expect_identical(
+    unique(x$variable_level),
+    c("cohort_1", "cohort_2", "cohort_3", "untreated")
+  )
   expect_true(all(x$additional_level |> unique() == c("0 to 30", "31 to 365")))
 
   # test concept works
@@ -29,7 +32,7 @@ test_that("test summariseTreatment", {
   expect_true(inherits(x, "summarised_result"))
   expect_true(all(
     x |> dplyr::filter(group_level == "cohort_1") |> dplyr::pull("variable_level") ==
-      c("a", "a", "b", "b", "c", "c", "untreated", "untreated", "not in observation", "not in observation")
+      c("a", "a", "b", "b", "c", "c", "untreated", "untreated")
   ))
   expect_true(all(x$additional_level |> unique() == c("0 to inf")))
 
@@ -43,7 +46,10 @@ test_that("test summariseTreatment", {
       )
   )
   expect_true(inherits(x, "summarised_result"))
-  expect_true(all(x$variable_level |> unique() == c("cohort_2", "cohort_3", "untreated", "not in observation")))
+  expect_identical(
+    unique(x$variable_level),
+    c("cohort_2", "cohort_3", "untreated")
+  )
   expect_true(all(x$additional_level |> unique() == c("0 to 30", "31 to 365")))
 
   # test suppress
@@ -107,8 +113,8 @@ test_that("summariseTreatment reports empty selected cohorts", {
   expect_identical(unique(counts$group_level), c("target1", "target2"))
   expect_identical(unique(counts$strata_name), "overall")
   expect_identical(unique(counts$strata_level), "overall")
-  expect_identical(unique(counts$variable_level), c("not in observation", "treat1", "untreated"))
-  expect_identical(counts$estimate_value, rep("0", 6))
+  expect_identical(unique(counts$variable_level), c("treat1", "untreated"))
+  expect_identical(counts$estimate_value, rep("0", 4))
 
   dropCreatedTables(cdm = cdm)
 })
@@ -129,7 +135,10 @@ test_that("test addTreatment", {
   dropCreatedTables(cdm = cdm)
 })
 
-test_that("test notInObservation argument", {
+test_that("test inObservation argument", {
+  expect_identical(formals(summariseTreatment)$inObservation, TRUE)
+  expect_identical(formals(summariseIndication)$inObservation, TRUE)
+
   cdm <- omopgenerics::cdmFromTables(
     tables = list(
       person = dplyr::tibble(
@@ -171,11 +180,11 @@ test_that("test notInObservation argument", {
         treatmentCohortName = "cohort2",
         window = list(c(0, 0), c(5, 365)),
         mutuallyExclusive = FALSE,
-        notInObservation = "include"
+        inObservation = FALSE
       ) |>
       omopgenerics::tidy()
   )
-  expect_identical(unique(x$not_in_observation), "include")
+  expect_identical(unique(x$in_observation), "FALSE")
   expect_identical(unique(x$mutually_exclusive), "FALSE")
   expect_identical(x$count, c(1L, 0L, 1L, 0L, 1L, 1L, 0L, 1L))
   expect_identical(x$percentage, c(50, 0, 50, 0, 50, 50, 0, 50))
@@ -186,11 +195,11 @@ test_that("test notInObservation argument", {
         treatmentCohortName = "cohort2",
         window = list(c(0, 0), c(1, 365)),
         mutuallyExclusive = FALSE,
-        notInObservation = "exclude"
+        inObservation = TRUE
       ) |>
       omopgenerics::tidy()
   )
-  expect_identical(unique(x$not_in_observation), "exclude")
+  expect_identical(unique(x$in_observation), "TRUE")
   expect_identical(unique(x$mutually_exclusive), "FALSE")
   expect_identical(x$count, c(1L, 0L, 1L, 1L, 1L, 0L))
   expect_identical(x$percentage, c(50, 0, 50, 100, 100, 0))
@@ -201,11 +210,11 @@ test_that("test notInObservation argument", {
         treatmentCohortName = "cohort2",
         window = list(c(0, 0), c(1, 365)),
         mutuallyExclusive = TRUE,
-        notInObservation = "include"
+        inObservation = FALSE
       ) |>
       omopgenerics::tidy()
   )
-  expect_identical(unique(x$not_in_observation), "include")
+  expect_identical(unique(x$in_observation), "FALSE")
   expect_identical(unique(x$mutually_exclusive), "TRUE")
   expect_identical(x$count, c(1L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 0L, 1L))
   expect_identical(x$percentage, c(50, 0, 0, 50, 0, 0, 0, 50, 0, 50))
@@ -216,11 +225,11 @@ test_that("test notInObservation argument", {
         treatmentCohortName = "cohort2",
         window = list(c(0, 0), c(1, 365)),
         mutuallyExclusive = TRUE,
-        notInObservation = "exclude"
+        inObservation = TRUE
       ) |>
       omopgenerics::tidy()
   )
-  expect_identical(unique(x$not_in_observation), "exclude")
+  expect_identical(unique(x$in_observation), "TRUE")
   expect_identical(unique(x$mutually_exclusive), "TRUE")
   expect_identical(x$count, c(1L, 0L, 0L, 1L, 0L, 0L, 1L, 0L))
   expect_identical(x$percentage, c(50, 0, 0, 50, 0, 0, 100, 0))

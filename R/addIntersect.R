@@ -25,14 +25,13 @@
 #' considered as having no observed indication.
 #'
 #' @inheritParams cohortDoc
-#' @param indicationCohortName Name of indication cohort table
-#' @param indicationCohortId target cohort Id to add indication
-#' @param indicationWindow time window of interests
-#' @param unknownIndicationTable Tables to search unknown indications
+#' @inheritParams indicationCohortNameDoc
+#' @inheritParams indicationCohortIdDoc
+#' @inheritParams indicationWindowDoc
+#' @inheritParams unknownIndicationTableDoc
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
-#' @param mutuallyExclusive Whether to consider mutually exclusive categories
-#' (one column per window) or not (one column per window and indication).
+#' @inheritParams mutuallyExclusiveDoc
 #' @param nameStyle Name style for the indications. By default:
 #' 'indication_\{window_name\}' (mutuallyExclusive = TRUE),
 #' 'indication_\{window_name\}_\{cohort_name\}' (mutuallyExclusive = FALSE).
@@ -101,13 +100,12 @@ addIndication <- function(cohort,
 #' cohort in a specified time window.
 #'
 #' @inheritParams cohortDoc
-#' @param treatmentCohortName Name of treatment cohort table
-#' @param treatmentCohortId target cohort Id to add treatment
-#' @param window time window of interests.
+#' @inheritParams treatmentCohortNameDoc
+#' @inheritParams treatmentCohortIdDoc
+#' @inheritParams windowDoc
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
-#' @param mutuallyExclusive Whether to consider mutually exclusive categories
-#' (one column per window) or not (one column per window and treatment).
+#' @inheritParams mutuallyExclusiveDoc
 #' @param nameStyle Name style for the treatment columns. By default:
 #' 'treatment_\{window_name\}' (mutuallyExclusive = TRUE),
 #' 'treatment_\{window_name\}_\{cohort_name\}' (mutuallyExclusive = FALSE).

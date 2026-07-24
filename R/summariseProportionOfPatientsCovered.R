@@ -73,13 +73,17 @@ summariseProportionOfPatientsCovered <- function(cohort,
   if (is.null(followUpDays)) {
     cli::cli_inform("Setting followUpDays to maximum time from first cohort entry to last cohort exit per cohort")
     maxDays <- cohort |>
-      dplyr::mutate(days_in_cohort = as.integer(clock::date_count_between(
-        start = .data$cohort_start_date,
-        end = .data$cohort_end_date,
+      dplyr::group_by(.data$cohort_definition_id, .data$subject_id) |>
+      dplyr::summarise(
+        first_cohort_start_date = min(.data$cohort_start_date, na.rm = TRUE),
+        last_cohort_end_date = max(.data$cohort_end_date, na.rm = TRUE),
+        .groups = "drop"
+      ) |>
+      dplyr::mutate(days = as.integer(clock::date_count_between(
+        start = .data$first_cohort_start_date,
+        end = .data$last_cohort_end_date,
         precision = "day"
       ))) |>
-      dplyr::group_by(.data$cohort_definition_id, .data$subject_id) |>
-      dplyr::summarise(days = sum(.data$days_in_cohort, na.rm = TRUE)) |>
       dplyr::group_by(.data$cohort_definition_id) |>
       dplyr::summarise(max_days = as.integer(max(.data$days, na.rm = TRUE))) |>
       dplyr::collect()
@@ -141,8 +145,6 @@ summariseProportionOfPatientsCovered <- function(cohort,
 }
 
 getPPC <- function(cohort, cohortId, strata, days) {
-  result <- list()
-
   workingCohortName <- omopgenerics::settings(cohort) |>
     dplyr::filter(.data$cohort_definition_id == .env$cohortId) |>
     dplyr::pull("cohort_name")
@@ -169,144 +171,90 @@ getPPC <- function(cohort, cohortId, strata, days) {
     )) |>
     dplyr::ungroup()
 
-  cli::cli_inform(glue::glue("Geting PPC over {days} days following first cohort entry"))
-  result[["overall_time_0"]] <-
-    getOverallStartingCount(workingCohort) |>
-    dplyr::mutate(time = 0)
-  for (j in seq_along(strata)) {
-    result[[paste0("strata_", j, "_time_0")]] <-
-      getStratifiedStartingCount(
-        workingCohort,
-        strata[[j]]
-      ) |>
-      dplyr::mutate(time = 0)
-  }
-
-  cli::cli_progress_bar(
-    .envir = parent.frame(),
-    total = days,
-    format = " -- getting PPC for {cli::pb_bar} {cli::pb_current} of {cli::pb_total} days"
-  )
-  for (i in seq_along(1:days)) {
-    cli::cli_progress_update(.envir = parent.frame())
-    c <- workingCohort |>
-      dplyr::mutate(working_date = clock::add_days(.data$min_cohort_start_date, i)) |>
-      dplyr::mutate(
-        in_cohort = dplyr::if_else(
-          .data$cohort_start_date <= .data$working_date &
-            .data$cohort_end_date >= .data$working_date,
-          1,
-          0
-        ),
-        in_observation = dplyr::if_else(.data$observation_end_date >= .data$working_date, 1, 0)
+  cli::cli_inform(glue::glue("Getting PPC over {days} days following first cohort entry"))
+  # Calculate counts from interval start/end events. This avoids rebuilding and
+  # scanning the complete cohort once for every day of follow-up.
+  result <- c(list(character()), strata) |>
+    purrr::map(\(workingStrata) {
+      getPPCCounts(
+        workingCohort = workingCohort,
+        workingStrata = workingStrata,
+        days = days
       )
-
-    # overall
-    result[[paste0("overall_time_", i)]] <-
-      getOverallCounts(workingCohort = c) |>
-      dplyr::mutate(time = i)
-
-    # stratified results
-    for (j in seq_along(strata)) {
-      result[[paste0("strata_", j, "_", i)]] <-
-        getStratifiedCounts(c, strata[[j]]) |>
-        dplyr::mutate(time = i)
-    }
-  }
-  cli::cli_progress_done(.envir = parent.frame())
-
-  result <- dplyr::bind_rows(result) |>
-    dplyr::mutate(denominator_count = dplyr::if_else(is.na(.data$denominator_count),
-      0, .data$denominator_count
-    )) |>
-    dplyr::mutate(outcome_count = dplyr::if_else(is.na(.data$outcome_count),
-      0, .data$outcome_count
-    )) |>
+    }) |>
+    dplyr::bind_rows() |>
     dplyr::mutate(cohort_name = .env$workingCohortName)
 
   result
 }
 
-getOverallStartingCount <- function(workingCohort) {
-  startN <- workingCohort |>
-    dplyr::select("subject_id") |>
-    dplyr::distinct() |>
-    dplyr::tally() |>
-    dplyr::pull("n")
-  dplyr::tibble(
-    denominator_count = .env$startN,
-    outcome_count = .env$startN,
-    strata_name = "overall",
-    strata_level = "overall"
-  )
-}
+getPPCCounts <- function(workingCohort, workingStrata, days) {
+  intervals <- workingCohort |>
+    omopgenerics::uniteStrata(cols = workingStrata) |>
+    dplyr::mutate(
+      start_day = as.integer(.data$cohort_start_date - .data$min_cohort_start_date),
+      end_day = as.integer(.data$cohort_end_date - .data$min_cohort_start_date),
+      observation_end_day = as.integer(
+        .data$observation_end_date - .data$min_cohort_start_date
+      )
+    )
 
-getOverallCounts <- function(workingCohort) {
-  dplyr::tibble(
-    # people still in observation
-    denominator_count = workingCohort |>
-      dplyr::filter(.data$in_observation == 1) |>
-      dplyr::summarise(n = dplyr::n_distinct(.data$subject_id)) |>
-      dplyr::pull("n"),
-    # people in cohort on date
-    outcome_count = workingCohort |>
-      dplyr::filter(.data$in_cohort == 1) |>
-      dplyr::summarise(n = dplyr::n_distinct(.data$subject_id)) |>
-      dplyr::pull("n"),
-    strata_name = "overall",
-    strata_level = "overall"
-  )
-}
+  levels <- intervals |>
+    dplyr::select("strata_name", "strata_level") |>
+    dplyr::distinct()
 
-getStratifiedStartingCount <- function(workingCohort, workingStrata) {
-  workingCohort |>
-    dplyr::select(c("subject_id", dplyr::all_of(workingStrata))) |>
-    dplyr::distinct() |>
-    dplyr::group_by(dplyr::pick(.env$workingStrata)) |>
+  # prepare denominator interval
+  denominatorIntervals <- intervals |>
+    dplyr::group_by(.data$subject_id, .data$strata_name, .data$strata_level) |>
     dplyr::summarise(
-      denominator_count = dplyr::n(),
-      outcome_count = dplyr::n()
+      end_day = max(.data$observation_end_day, na.rm = TRUE),
+      .groups = "drop"
     ) |>
-    dplyr::ungroup() |>
-    tidyr::unite("strata_level",
-      c(dplyr::all_of(.env$workingStrata)),
-      remove = FALSE,
-      sep = " &&& "
+    dplyr::select(!"subject_id") |>
+    dplyr::mutate(
+      end_day = dplyr::if_else(.data$end_day > .env$days, .env$days, .data$end_day),
+      start_day = 0L
+    )
+
+  # prepare outcome interval
+  outcomeIntervals <- intervals |>
+    dplyr::select("strata_name", "strata_level", "start_day", "end_day") |>
+    dplyr::mutate(
+      end_day = dplyr::if_else(.data$end_day > .env$days, .env$days, .data$end_day)
     ) |>
-    dplyr::mutate(strata_name = !!paste0(workingStrata, collapse = " &&& ")) |>
-    dplyr::relocate("strata_level", .after = "strata_name") |>
-    dplyr::select(!dplyr::any_of(workingStrata))
+    dplyr::filter(.data$start_day <= .data$end_day)
+
+  denominatorCounts <- countPPCIntervals(denominatorIntervals, levels, days) |>
+    dplyr::rename(denominator_count = "count")
+  outcomeCounts <- countPPCIntervals(outcomeIntervals, levels, days) |>
+    dplyr::rename(outcome_count = "count")
+
+  tidyr::expand_grid(levels, time = 0:days) |>
+    dplyr::left_join(denominatorCounts, by = c("strata_name", "strata_level", "time")) |>
+    dplyr::left_join(outcomeCounts, by = c("strata_name", "strata_level", "time"))
 }
 
-getStratifiedCounts <- function(workingCohort, workingStrata) {
-  workingCohort |>
-    dplyr::group_by(dplyr::pick(.env$workingStrata)) |>
-    # so that we get empty result if no records
-    dplyr::summarise(placeholder = dplyr::n()) |>
-    dplyr::select(!"placeholder") |>
-    dplyr::full_join(
-      workingCohort |>
-        dplyr::filter(.data$in_observation == 1) |>
-        dplyr::group_by(dplyr::pick(.env$workingStrata)) |>
-        dplyr::summarise(denominator_count = dplyr::n_distinct(.data$subject_id)),
-      by = workingStrata
-    ) |>
-    dplyr::full_join(
-      workingCohort |>
-        dplyr::filter(.data$in_cohort == 1) |>
-        dplyr::group_by(dplyr::pick(.env$workingStrata)) |>
-        dplyr::summarise(outcome_count = dplyr::n_distinct(.data$subject_id)),
-      by = workingStrata
-    ) |>
+countPPCIntervals <- function(intervals, levels, days) {
+  events <- dplyr::bind_rows(
+    intervals |>
+      dplyr::select("strata_name", "strata_level", "time" = "start_day") |>
+      dplyr::mutate(change = 1L),
+    intervals |>
+      dplyr::select("strata_name", "strata_level", "time" = "end_day") |>
+      dplyr::mutate(time = .data$time + 1L, change = -1L)
+  ) |>
+    dplyr::filter(.data$time <= .env$days) |>
+    dplyr::group_by(.data$strata_name, .data$strata_level, .data$time) |>
+    dplyr::summarise(change = sum(.data$change), .groups = "drop")
+
+  tidyr::expand_grid(levels, time = 0:days) |>
+    dplyr::left_join(events, by = c("strata_name", "strata_level", "time")) |>
+    dplyr::mutate(change = dplyr::coalesce(.data$change, 0L)) |>
+    dplyr::group_by(.data$strata_name, .data$strata_level) |>
+    dplyr::arrange(.data$time, .by_group = TRUE) |>
+    dplyr::mutate(count = cumsum(.data$change)) |>
     dplyr::ungroup() |>
-    tidyr::unite("strata_level",
-      c(dplyr::all_of(.env$workingStrata)),
-      remove = FALSE,
-      sep = " &&& "
-    ) |>
-    dplyr::mutate(strata_name = !!paste0(workingStrata, collapse = " &&& ")) |>
-    dplyr::relocate("strata_level", .after = "strata_name") |>
-    dplyr::select(!dplyr::any_of(workingStrata))
+    dplyr::select(!"change")
 }
 
 calculatePPC <- function(num, den, alpha) {

@@ -10,7 +10,7 @@ tableTreatment(
   groupColumn = "variable_name",
   type = NULL,
   hide = c("window_name", "mutually_exclusive", "censor_date", "cohort_table_name",
-    "index_date", "treatment_cohort_name"),
+    "index_date", "treatment_cohort_name", "in_observation"),
   style = NULL,
   .options = list()
 )

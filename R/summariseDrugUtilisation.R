@@ -25,9 +25,7 @@
 #' @inheritParams conceptSetDoc
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
-#' @param restrictIncident Whether to include only incident prescriptions in the
-#' analysis. If FALSE all prescriptions that overlap with the study period will
-#' be included.
+#' @inheritParams restrictIncidentDoc
 #' @inheritParams gapEraDoc
 #' @inheritParams drugUtilisationDoc
 #'

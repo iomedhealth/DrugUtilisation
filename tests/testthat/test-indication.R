@@ -665,3 +665,75 @@ test_that("summariseIndication", {
 
   dropCreatedTables(cdm = cdm)
 })
+
+test_that("summariseIndication handles individuals not in observation", {
+  cdm <- omopgenerics::cdmFromTables(
+    tables = list(
+      person = dplyr::tibble(
+        person_id = 1:2L,
+        gender_concept_id = 0L,
+        year_of_birth = 1990L,
+        race_concept_id = 0L,
+        ethnicity_concept_id = 0L
+      ),
+      observation_period = dplyr::tibble(
+        observation_period_id = 1:2L,
+        person_id = 1:2L,
+        observation_period_start_date = as.Date("2020-01-01"),
+        observation_period_end_date = as.Date("2020-01-01") + c(0L, 100L),
+        period_type_concept_id = 0L
+      )
+    ),
+    cdmName = "test",
+    cohortTables = list(
+      cohort1 = dplyr::tibble(
+        cohort_definition_id = 1L,
+        subject_id = 1:2L,
+        cohort_start_date = as.Date("2020-01-01"),
+        cohort_end_date = as.Date("2020-01-01")
+      ),
+      cohort2 = dplyr::tibble(
+        cohort_definition_id = c(1L, 1L, 2L),
+        subject_id = c(1L, 2L, 2L),
+        cohort_start_date = as.Date("2020-01-01") + c(0L, 10L, 20L),
+        cohort_end_date = cohort_start_date
+      )
+    )
+  ) |>
+    copyCdm()
+
+  included <- cdm$cohort1 |>
+    summariseIndication(
+      indicationCohortName = "cohort2",
+      indicationWindow = list(c(0, 0), c(5, 365)),
+      mutuallyExclusive = FALSE,
+      inObservation = FALSE
+    ) |>
+    omopgenerics::tidy()
+
+  expect_identical(unique(included$in_observation), "FALSE")
+  expect_identical(included$count, c(1L, 0L, 1L, 0L, 1L, 1L, 0L, 1L))
+  expect_identical(included$percentage, c(50, 0, 50, 0, 50, 50, 0, 50))
+
+  excluded <- cdm$cohort1 |>
+    summariseIndication(
+      indicationCohortName = "cohort2",
+      indicationWindow = list(c(0, 0), c(1, 365)),
+      mutuallyExclusive = FALSE,
+      inObservation = TRUE
+    ) |>
+    omopgenerics::tidy()
+
+  expect_identical(unique(excluded$in_observation), "TRUE")
+  expect_identical(excluded$count, c(1L, 0L, 1L, 1L, 1L, 0L))
+  expect_identical(excluded$percentage, c(50, 0, 50, 100, 100, 0))
+  expect_error(
+    cdm$cohort1 |>
+      summariseIndication(
+        indicationCohortName = "cohort2",
+        inObservation = "invalid"
+      )
+  )
+
+  dropCreatedTables(cdm = cdm)
+})

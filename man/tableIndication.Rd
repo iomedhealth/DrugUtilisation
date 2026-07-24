@@ -9,7 +9,8 @@ tableIndication(
   header = c("cdm_name", "cohort_name", strataColumns(result)),
   groupColumn = "variable_name",
   hide = c("window_name", "mutually_exclusive", "unknown_indication_table",
-    "censor_date", "cohort_table_name", "index_date", "indication_cohort_name"),
+    "censor_date", "cohort_table_name", "index_date", "indication_cohort_name",
+    "in_observation"),
   type = NULL,
   style = NULL,
   .options = list()

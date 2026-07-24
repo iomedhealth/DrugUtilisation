@@ -1,4 +1,14 @@
 
+# DrugUtilisation 1.3.0
+
+* Speed up proportion of patients covered by @catalamarti in #775
+* Discontinuation day is the first unexposed day by @catalamarti in #776
+* Default of not in observation by @catalamarti in #777
+* fix tests by @catalamarti in #778
+* restrict to first discontinuation in summariseDiscontinuationAsSurvival by @catalamarti in #779
+* Breaking change: replace the `notInObservation` argument in `summariseTreatment()` and `summariseIndication()` with the logical `inObservation` argument, which defaults to `TRUE`. by @catalamarti in #780
+* Consistent documentation by @catalamarti in #781
+
 # DrugUtilisation 1.2.1
 
 * Fix erafyCohort for Sql Server by @catalamarti in #760

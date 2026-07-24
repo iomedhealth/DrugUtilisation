@@ -20,13 +20,16 @@ addIndication(
 \arguments{
 \item{cohort}{A cohort_table object.}
 
-\item{indicationCohortName}{Name of indication cohort table}
+\item{indicationCohortName}{Name of the cohort table containing potential
+indications.}
 
-\item{indicationCohortId}{target cohort Id to add indication}
+\item{indicationCohortId}{Cohort definition IDs of the indications of
+interest. If \code{NULL}, all cohorts in \code{indicationCohortName} are included.}
 
-\item{indicationWindow}{time window of interests}
+\item{indicationWindow}{Time windows over which to identify indications.}
 
-\item{unknownIndicationTable}{Tables to search unknown indications}
+\item{unknownIndicationTable}{Tables in the OMOP CDM to search for unknown
+indications.}
 
 \item{indexDate}{Name of a column that indicates the date to start the
 analysis.}
@@ -34,8 +37,9 @@ analysis.}
 \item{censorDate}{Name of a column that indicates the date to stop the
 analysis, if NULL end of individuals observation is used.}
 
-\item{mutuallyExclusive}{Whether to consider mutually exclusive categories
-(one column per window) or not (one column per window and indication).}
+\item{mutuallyExclusive}{Whether intersections should be mutually exclusive.
+If \code{TRUE}, cohort combinations are reported as mutually exclusive categories;
+if \code{FALSE}, each cohort is reported independently.}
 
 \item{nameStyle}{Name style for the indications. By default:
 'indication_\{window_name\}' (mutuallyExclusive = TRUE),

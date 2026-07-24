@@ -27,11 +27,9 @@
 #' @inheritParams cdmDoc
 #' @inheritParams newNameDoc
 #' @param atcName Names of ATC classification of interest.
-#' @param gapEra Number of days between two continuous exposures to be
-#' considered in the same era. Records that have fewer days between them than
-#' this gap will be concatenated into the same cohort record.
-#' @param subsetCohort Cohort table to subset.
-#' @param subsetCohortId Cohort id to subset.
+#' @inheritParams gapEraDoc
+#' @inheritParams subsetCohortDoc
+#' @inheritParams subsetCohortIdDoc
 #' @inheritParams numberExposuresDoc
 #' @inheritParams daysPrescribedDoc
 #' @param ... Arguments to be passed to `CodelistGenerator::getATCCodes()`.

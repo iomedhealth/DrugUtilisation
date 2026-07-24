@@ -18,19 +18,13 @@
 #'
 #' @inheritParams cohortDoc
 #' @inheritParams cohortIdDoc
-#' @param switchCohortTable A cohort table in the cdm that contains possible
-#' alternative treatments.
-#' @param switchCohortId The cohort ids to be used from switchCohortTable. If
-#' NULL all cohort definition ids are used.
+#' @inheritParams switchCohortTableDoc
+#' @inheritParams switchCohortIdDoc
 #' @inheritParams strataDoc
-#' @param followUpDays A vector of number of days to follow up. It can be
-#' multiple values.
-#' @param restrictToFirstDiscontinuation Whether to consider only the first
-#' discontinuation episode or all of them.
+#' @inheritParams drugRestartFollowUpDaysDoc
+#' @inheritParams restrictToFirstDiscontinuationDoc
 #' @inheritParams censorDateDoc
-#' @param incident Whether the switch treatment has to be incident (start after
-#' discontinuation) or not (it can start before the discontinuation and last
-#' till after).
+#' @inheritParams incidentDoc
 #'
 #' @return A summarised_result object with the percentages of restart, switch
 #' and not exposed per follow-up period given.
@@ -214,16 +208,11 @@ summariseDrugRestart <- function(cohort,
 #' Add drug restart information as a column per follow-up period of interest.
 #'
 #' @inheritParams cohortDoc
-#' @param switchCohortTable A cohort table in the cdm that contains possible
-#' alternative treatments.
-#' @param switchCohortId The cohort ids to be used from switchCohortTable. If
-#' NULL all cohort definition ids are used.
-#' @param followUpDays A vector of number of days to follow up. It can be
-#' multiple values.
+#' @inheritParams switchCohortTableDoc
+#' @inheritParams switchCohortIdDoc
+#' @inheritParams drugRestartFollowUpDaysDoc
 #' @inheritParams censorDateDoc
-#' @param incident Whether the switch treatment has to be incident (start after
-#' discontinuation) or not (it can start before the discontinuation and last
-#' till after).
+#' @inheritParams incidentDoc
 #' @inheritParams nameStyleDoc
 #'
 #' @return The cohort table given with additional columns with information on the

@@ -46,7 +46,7 @@ tableIndication <- function(result,
                               "window_name", "mutually_exclusive",
                               "unknown_indication_table", "censor_date",
                               "cohort_table_name", "index_date",
-                              "indication_cohort_name"
+                              "indication_cohort_name", "in_observation"
                             ),
                             type = NULL,
                             style = NULL,
@@ -204,7 +204,7 @@ tableTreatment <- function(result,
                            hide = c(
                              "window_name", "mutually_exclusive", "censor_date",
                              "cohort_table_name", "index_date",
-                             "treatment_cohort_name"
+                             "treatment_cohort_name", "in_observation"
                            ),
                            style = NULL,
                            .options = list()) {

@@ -368,7 +368,7 @@ correctX <- function(x) { # issue in visOmopResults
 #'
 #' @inheritParams resultDoc
 #' @inheritParams plotDoc
-#' @param ribbon Whether to plot a ribbon with the confidence intervals.
+#' @inheritParams ribbonDoc
 #'
 #' @return Plot of proportion Of patients covered over time
 #' @export
@@ -440,7 +440,7 @@ plotProportionOfPatientsCovered <- function(result,
 #'
 #' @inheritParams resultDoc
 #' @inheritParams plotDoc
-#' @param ribbon Whether to plot a ribbon with the confidence intervals.
+#' @inheritParams ribbonDoc
 #'
 #' @return Plot probability to continue the drug over over time
 #'

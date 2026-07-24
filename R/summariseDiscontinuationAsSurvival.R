@@ -6,12 +6,15 @@
 #' package. The function assumes that each cohort entry is a continuous
 #' treatment era. Discontinuation will be assessed as a survival analysis with
 #' index date: *start of the drug treatment era* (`cohort_start_date`) and event
-#' of interest: *end of the drug treatment era* (`cohort_end_date`). The analysis
-#' will use `estimateSingleEventSurvival()` or `estimateCompetingRiskSurvival()`
-#' depending if `competingOutcomeCohortTable` is provided or not.
+#' of interest: *first day without exposure* (the day after
+#' `cohort_end_date`). An event is only recorded if the individual remains under
+#' observation on that day. The analysis will use
+#' `estimateSingleEventSurvival()` or `estimateCompetingRiskSurvival()` depending
+#' if `competingOutcomeCohortTable` is provided or not.
 #'
 #' @inheritParams cohortDoc
 #' @inheritParams cohortIdDoc
+#' @inheritParams restrictToFirstDiscontinuationDoc
 #' @param followUpDays Number of days to follow up individuals (lower bound 1,
 #' upper bound Inf).
 #' @param censorDate if not NULL, an individual's follow up will be censored at
@@ -52,6 +55,7 @@ summariseDiscontinuationAsSurvival <- function(cohort,
                                      cohortId = NULL,
                                      followUpDays = Inf,
                                      censorDate = NULL,
+                                     restrictToFirstDiscontinuation = TRUE,
                                      strata = list(),
                                      competingOutcomeCohortTable = NULL,
                                      competingOutcomeCohortId = NULL,
@@ -79,6 +83,7 @@ summariseDiscontinuationAsSurvival <- function(cohort,
   } else {
     competingOutcomeNames <- "none"
   }
+  omopgenerics::assertLogical(restrictToFirstDiscontinuation, length = 1)
 
   # cohorts
   set <- omopgenerics::settings(x = cohort)
@@ -96,19 +101,27 @@ summariseDiscontinuationAsSurvival <- function(cohort,
       cli::cli_inform(c(i = "Subsetting table to cohort of interest."))
       cdm[[nm1]] <- CohortConstructor::subsetCohorts(cohort = cohort, cohortId = id, name = nm1)
 
+      # subset to first discontinuation
+      if (restrictToFirstDiscontinuation) {
+        cdm[[nm1]] <- cdm[[nm1]] |>
+          CohortConstructor::requireIsFirstEntry()
+      }
+
       # create discontinuation cohort
       cli::cli_inform(c(i = "Preparing discontinuation (outcome) cohort."))
       discontinuationCohort <- paste0("discontinuation_of_", cohortName)
-      endFollowUp <- omopgenerics::uniqueId(exclude = colnames(cohort))
       cdm[[nm2]] <- cdm[[nm1]] |>
-        PatientProfiles::addFutureObservation(
-          futureObservationName = endFollowUp,
-          futureObservationType = "date",
-          name = nm2
+        CohortConstructor::padCohortEnd(
+          days = 1L,
+          requireFullContribution = TRUE,
+          name = nm2,
+          .softValidation = TRUE
         ) |>
-        dplyr::filter(.data$cohort_end_date != .data[[endFollowUp]]) |>
-        dplyr::mutate(cohort_start_date = .data$cohort_end_date) |>
-        dplyr::compute(name = nm2) |>
+        CohortConstructor::padCohortDate(
+          days = 0L,
+          cohortDate = "cohort_start_date",
+          indexDate = "cohort_end_date"
+        ) |>
         omopgenerics::newCohortTable(cohortSetRef = dplyr::tibble(
           cohort_definition_id = id,
           cohort_name = discontinuationCohort

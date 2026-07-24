@@ -35,8 +35,8 @@
 #' specified ingredients, creating distinct cohort_definition_id for each
 #' named group.
 #' @inheritParams gapEraDoc
-#' @param subsetCohort Cohort table to subset.
-#' @param subsetCohortId Cohort id to subset.
+#' @inheritParams subsetCohortDoc
+#' @inheritParams subsetCohortIdDoc
 #' @inheritParams numberExposuresDoc
 #' @inheritParams daysPrescribedDoc
 #' @param ... Arguments to be passed to

@@ -25,12 +25,11 @@ vector.}
 \item{atcName}{Names of ATC classification of interest.}
 
 \item{gapEra}{Number of days between two continuous exposures to be
-considered in the same era. Records that have fewer days between them than
-this gap will be concatenated into the same cohort record.}
+considered in the same era.}
 
 \item{subsetCohort}{Cohort table to subset.}
 
-\item{subsetCohortId}{Cohort id to subset.}
+\item{subsetCohortId}{Cohort definition IDs to use from \code{subsetCohort}.}
 
 \item{numberExposures}{Whether to include 'number_exposures' (number of drug
 exposure records between indexDate and censorDate).}

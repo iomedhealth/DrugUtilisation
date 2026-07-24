@@ -27,8 +27,8 @@
 #' @inheritParams newNameDoc
 #' @inheritParams conceptSetDoc
 #' @inheritParams gapEraDoc
-#' @param subsetCohort Cohort table to subset.
-#' @param subsetCohortId Cohort id to subset.
+#' @inheritParams subsetCohortDoc
+#' @inheritParams subsetCohortIdDoc
 #' @inheritParams numberExposuresDoc
 #' @inheritParams daysPrescribedDoc
 #'
@@ -113,7 +113,10 @@ generateDrugUtilisationCohortSet <- function(cdm,
     cli::cli_inform(c("i" = "Collapsing records with gapEra = {gapEra} days."))
     cdm[[name]] <- cdm[[name]] |>
       erafy(gap = gapEra, toSummarise = cols) |>
-      dplyr::select(!"observation_period_id") |>
+      dplyr::select(
+        dplyr::all_of(omopgenerics::cohortColumns("cohort")),
+        dplyr::all_of(cols)
+      ) |>
       dplyr::compute(name = name, temporary = FALSE) |>
       omopgenerics::recordCohortAttrition(glue::glue(
         "Collapse records separated by {gapEra} or less days"
