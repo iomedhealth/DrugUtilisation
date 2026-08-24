@@ -138,6 +138,8 @@ test_that("test addTreatment", {
 test_that("test inObservation argument", {
   expect_identical(formals(summariseTreatment)$inObservation, TRUE)
   expect_identical(formals(summariseIndication)$inObservation, TRUE)
+  expect_identical(formals(summariseTreatment)$restrictIncident, FALSE)
+  expect_identical(formals(summariseIndication)$restrictIncident, FALSE)
 
   cdm <- omopgenerics::cdmFromTables(
     tables = list(
@@ -233,6 +235,111 @@ test_that("test inObservation argument", {
   expect_identical(unique(x$mutually_exclusive), "TRUE")
   expect_identical(x$count, c(1L, 0L, 0L, 1L, 0L, 0L, 1L, 0L))
   expect_identical(x$percentage, c(50, 0, 0, 50, 0, 0, 100, 0))
+
+  dropCreatedTables(cdm = cdm)
+})
+
+test_that("restrictIncident only includes target cohorts starting during follow-up", {
+  target <- dplyr::tibble(
+    cohort_definition_id = 1L,
+    subject_id = 1:2,
+    cohort_start_date = as.Date(c("2020-01-10", "2020-01-10")),
+    cohort_end_date = as.Date(c("2020-01-31", "2020-01-31"))
+  )
+  treatment <- dplyr::tibble(
+    cohort_definition_id = 1L,
+    subject_id = c(1L, 2L, 2L),
+    cohort_start_date = as.Date(c("2020-01-01", "2020-01-16", "2020-02-01")),
+    cohort_end_date = as.Date(c("2020-01-15", "2020-01-20", "2020-02-05"))
+  )
+  cdm <- mockDrugUtilisation(
+    cohort1 = target,
+    cohort2 = treatment,
+    observation_period = dplyr::tibble(
+      observation_period_id = 1L,
+      person_id = 1:2,
+      observation_period_start_date = as.Date("2019-01-01"),
+      observation_period_end_date = as.Date("2021-01-01"),
+      period_type_concept_id = 0L
+    )
+  ) |>
+    copyCdm()
+
+  prevalent <- cdm$cohort1 |>
+    summariseTreatment(
+      treatmentCohortName = "cohort2",
+      window = list(c(0, 30)),
+      censorDate = "cohort_end_date",
+      mutuallyExclusive = FALSE,
+      restrictIncident = FALSE
+    ) |>
+    omopgenerics::tidy()
+  incident <- cdm$cohort1 |>
+    summariseTreatment(
+      treatmentCohortName = "cohort2",
+      window = list(c(0, 30)),
+      censorDate = "cohort_end_date",
+      mutuallyExclusive = FALSE,
+      restrictIncident = TRUE
+    ) |>
+    omopgenerics::tidy()
+
+  expect_identical(
+    prevalent |>
+      dplyr::filter(.data$variable_level == "cohort_1") |>
+      dplyr::pull("count"),
+    2L
+  )
+  expect_identical(
+    incident |>
+      dplyr::filter(.data$variable_level == "cohort_1") |>
+      dplyr::pull("count"),
+    1L
+  )
+  expect_identical(unique(prevalent$restrict_incident), "FALSE")
+  expect_identical(unique(incident$restrict_incident), "TRUE")
+
+  indication <- cdm$cohort1 |>
+    summariseIndication(
+      indicationCohortName = "cohort2",
+      indicationWindow = list(c(0, 30)),
+      censorDate = "cohort_end_date",
+      mutuallyExclusive = FALSE,
+      restrictIncident = TRUE
+    ) |>
+    omopgenerics::tidy()
+  expect_identical(
+    indication |>
+      dplyr::filter(.data$variable_level == "cohort_1") |>
+      dplyr::pull("count"),
+    1L
+  )
+  expect_identical(unique(indication$restrict_incident), "TRUE")
+
+  addedTreatment <- cdm$cohort1 |>
+    addTreatment(
+      treatmentCohortName = "cohort2",
+      window = list(c(0, 30)),
+      censorDate = "cohort_end_date",
+      restrictIncident = TRUE
+    ) |>
+    dplyr::collect() |>
+    dplyr::arrange(.data$subject_id)
+  expect_identical(
+    addedTreatment$medication_0_to_30,
+    c("untreated", "cohort_1")
+  )
+
+  addedIndication <- cdm$cohort1 |>
+    addIndication(
+      indicationCohortName = "cohort2",
+      indicationWindow = list(c(0, 30)),
+      censorDate = "cohort_end_date",
+      restrictIncident = TRUE
+    ) |>
+    dplyr::collect() |>
+    dplyr::arrange(.data$subject_id)
+  expect_identical(addedIndication$indication_0_to_30, c("none", "cohort_1"))
 
   dropCreatedTables(cdm = cdm)
 })

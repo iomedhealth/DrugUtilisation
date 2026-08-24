@@ -13,7 +13,8 @@ addTreatment(
   censorDate = NULL,
   mutuallyExclusive = TRUE,
   nameStyle = NULL,
-  name = NULL
+  name = NULL,
+  restrictIncident = FALSE
 )
 }
 \arguments{
@@ -43,6 +44,10 @@ if \code{FALSE}, each cohort is reported independently.}
 
 \item{name}{Name of the new computed cohort table, if NULL a temporary table
 will be created.}
+
+\item{restrictIncident}{Whether to include only target cohort records that
+start during the analysis period. If \code{FALSE}, all target cohort records
+that overlap with the study period will be included.}
 }
 \value{
 The original table with a variable added that summarises the

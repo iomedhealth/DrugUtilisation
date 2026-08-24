@@ -32,6 +32,7 @@
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
 #' @inheritParams mutuallyExclusiveDoc
+#' @inheritParams restrictIncidentCohortDoc
 #' @param nameStyle Name style for the indications. By default:
 #' 'indication_\{window_name\}' (mutuallyExclusive = TRUE),
 #' 'indication_\{window_name\}_\{cohort_name\}' (mutuallyExclusive = FALSE).
@@ -77,7 +78,8 @@ addIndication <- function(cohort,
                           censorDate = NULL,
                           mutuallyExclusive = TRUE,
                           nameStyle = NULL,
-                          name = NULL) {
+                          name = NULL,
+                          restrictIncident = FALSE) {
   .addIntersect(
     cohort = cohort,
     cohortTable = indicationCohortName,
@@ -87,6 +89,7 @@ addIndication <- function(cohort,
     unknownTable = unknownIndicationTable,
     indexDate = indexDate,
     censorDate = censorDate,
+    restrictIncident = restrictIncident,
     name = name,
     nameStyle = nameStyle,
     nm = "indications"
@@ -106,6 +109,7 @@ addIndication <- function(cohort,
 #' @inheritParams indexDateDoc
 #' @inheritParams censorDateDoc
 #' @inheritParams mutuallyExclusiveDoc
+#' @inheritParams restrictIncidentCohortDoc
 #' @param nameStyle Name style for the treatment columns. By default:
 #' 'treatment_\{window_name\}' (mutuallyExclusive = TRUE),
 #' 'treatment_\{window_name\}_\{cohort_name\}' (mutuallyExclusive = FALSE).
@@ -144,7 +148,8 @@ addTreatment <- function(cohort,
                          censorDate = NULL,
                          mutuallyExclusive = TRUE,
                          nameStyle = NULL,
-                         name = NULL) {
+                         name = NULL,
+                         restrictIncident = FALSE) {
   .addIntersect(
     cohort = cohort,
     cohortTable = treatmentCohortName,
@@ -154,6 +159,7 @@ addTreatment <- function(cohort,
     unknownTable = character(),
     indexDate = indexDate,
     censorDate = censorDate,
+    restrictIncident = restrictIncident,
     name = name,
     nameStyle = nameStyle,
     nm = "medications"
@@ -168,6 +174,7 @@ addTreatment <- function(cohort,
                           unknownTable,
                           indexDate,
                           censorDate,
+                          restrictIncident,
                           name,
                           nameStyle,
                           nm,
@@ -184,6 +191,12 @@ addTreatment <- function(cohort,
   omopgenerics::assertCharacter(indexDate, length = 1, call = call)
   omopgenerics::assertTrue(indexDate %in% colnames(cohort), call = call)
   omopgenerics::assertCharacter(censorDate, null = TRUE, length = 1, call = call)
+  omopgenerics::assertLogical(restrictIncident, length = 1, call = call)
+  targetEndDate <- ifelse(
+    restrictIncident,
+    "cohort_start_date",
+    "cohort_end_date"
+  )
   omopgenerics::assertChoice(nm, c("indications", "medications"))
   if (!is.null(censorDate)) {
     omopgenerics::assertTrue(censorDate %in% colnames(cohort), call = call)
@@ -219,7 +232,7 @@ addTreatment <- function(cohort,
       indexDate = indexDate,
       censorDate = censorDate,
       targetStartDate = "cohort_start_date",
-      targetEndDate = "cohort_end_date",
+      targetEndDate = targetEndDate,
       window = window,
       targetCohortId = cohortTableId,
       nameStyle = "x_{window_name}_{cohort_name}",

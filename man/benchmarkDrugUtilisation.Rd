@@ -8,7 +8,8 @@ benchmarkDrugUtilisation(
   cdm,
   ingredient = "acetaminophen",
   alternativeIngredient = c("ibuprofen", "aspirin", "diclofenac"),
-  indicationCohort = NULL
+  indicationCohort = NULL,
+  personSample = 1e+05
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ treatments.}
 
 \item{indicationCohort}{Name of a cohort in the cdm_reference object to use
 as indicatiomn.}
+
+\item{personSample}{Number of individuals to subset the cdm for the
+benchmark. If NULL no sample is applied.}
 }
 \value{
 A summarise_result object.

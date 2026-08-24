@@ -15,7 +15,8 @@ summariseIndication(
   indexDate = "cohort_start_date",
   mutuallyExclusive = TRUE,
   censorDate = NULL,
-  inObservation = TRUE
+  inObservation = TRUE,
+  restrictIncident = FALSE
 )
 }
 \arguments{
@@ -51,6 +52,10 @@ analysis, if NULL end of individuals observation is used.}
 \item{inObservation}{Whether to restrict the analysis to individuals in
 observation. If \code{TRUE}, individuals not in observation are excluded. If
 \code{FALSE}, they are included as a separate category.}
+
+\item{restrictIncident}{Whether to include only target cohort records that
+start during the analysis period. If \code{FALSE}, all target cohort records
+that overlap with the study period will be included.}
 }
 \value{
 A summarised result
