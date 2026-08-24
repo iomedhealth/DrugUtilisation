@@ -50,6 +50,13 @@ subsetTables <- function(cdm, conceptSet, name, subsetCohort, subsetCohortId) {
           dplyr::distinct(.data$subject_id),
         by = "subject_id"
       )
+  } else {
+    cohort <- cohort |>
+      dplyr::inner_join(
+        cdm$person |>
+          dplyr::select("subject_id" = "person_id"),
+        by = "subject_id"
+      )
   }
   cohort <- cohort |>
     dplyr::inner_join(cdm[[nm]], by = "drug_concept_id") |>

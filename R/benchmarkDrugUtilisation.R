@@ -22,6 +22,8 @@
 #' treatments.
 #' @param indicationCohort Name of a cohort in the cdm_reference object to use
 #' as indicatiomn.
+#' @param personSample Number of individuals to subset the cdm for the
+#' benchmark. If NULL no sample is applied.
 #'
 #' @return A summarise_result object.
 #'
@@ -42,12 +44,15 @@
 benchmarkDrugUtilisation <- function(cdm,
                                      ingredient = "acetaminophen",
                                      alternativeIngredient = c("ibuprofen", "aspirin", "diclofenac"),
-                                     indicationCohort = NULL) {
+                                     indicationCohort = NULL,
+                                     personSample = 100000) {
   # initial checks
   cdm <- omopgenerics::validateCdmArgument(cdm = cdm)
   omopgenerics::assertCharacter(ingredient, length = 1)
   omopgenerics::assertCharacter(alternativeIngredient)
   omopgenerics::assertCharacter(indicationCohort, length = 1, null = TRUE)
+  omopgenerics::assertNumeric(personSample, integerish = TRUE, min = 1, length = 1, null = TRUE)
+  if (is.null(personSample)) personSample <- Inf
 
   result <- dplyr::tibble(task = character(), time = numeric())
 
@@ -72,6 +77,28 @@ benchmarkDrugUtilisation <- function(cdm,
   time <- as.numeric(difftime(time1 = Sys.time(), time2 = t0, units = "secs"))
   result <- result |>
     dplyr::union_all(dplyr::tibble(task = task, time = time))
+
+  # subset cdm
+  if (omopgenerics::numberSubjects(cdm$person) > personSample) {
+    task <- paste("subset cdm to", personSample, "individuals")
+    benchmarkMessage(task)
+    t0 <- Sys.time()
+    ids <- cdm$person |>
+      dplyr::select("person_id") |>
+      dplyr::distinct() |>
+      dplyr::pull()
+    ids <- sample(ids, size = personSample, replace = FALSE)
+    personSample <- omopgenerics::uniqueTableName(prefix = prefix)
+    cdm[[personSample]] <- cdm$person |>
+      dplyr::select("person_id") |>
+      dplyr::filter(.data$person_id %in% .env$ids) |>
+      dplyr::compute(name = personSample)
+    cdm$person <- cdm$person |>
+      dplyr::inner_join(personSample, by = "person_id")
+    time <- as.numeric(difftime(time1 = Sys.time(), time2 = t0, units = "secs"))
+    result <- result |>
+      dplyr::union_all(dplyr::tibble(task = task, time = time))
+  }
 
   # create cohort
   task <- "generateDrugUtilisation"

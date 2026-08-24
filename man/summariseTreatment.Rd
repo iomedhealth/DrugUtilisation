@@ -14,7 +14,8 @@ summariseTreatment(
   indexDate = "cohort_start_date",
   censorDate = NULL,
   mutuallyExclusive = FALSE,
-  inObservation = TRUE
+  inObservation = TRUE,
+  restrictIncident = FALSE
 )
 }
 \arguments{
@@ -47,6 +48,10 @@ if \code{FALSE}, each cohort is reported independently.}
 \item{inObservation}{Whether to restrict the analysis to individuals in
 observation. If \code{TRUE}, individuals not in observation are excluded. If
 \code{FALSE}, they are included as a separate category.}
+
+\item{restrictIncident}{Whether to include only target cohort records that
+start during the analysis period. If \code{FALSE}, all target cohort records
+that overlap with the study period will be included.}
 }
 \value{
 A summary of treatments stratified by cohort_name and strata_name

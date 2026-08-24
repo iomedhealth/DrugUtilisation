@@ -1,4 +1,9 @@
 
+# DrugUtilisation 1.3.1
+
+* Add restrictIncident parameter for intersect functions by @catalamarti in #785
+* Run benchmark in a 100000 sample by default by @catalamarti in #786
+
 # DrugUtilisation 1.3.0
 
 * Speed up proportion of patients covered by @catalamarti in #775

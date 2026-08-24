@@ -36,6 +36,7 @@
 #' @inheritParams mutuallyExclusiveDoc
 #' @inheritParams censorDateDoc
 #' @inheritParams inObservationDoc
+#' @inheritParams restrictIncidentCohortDoc
 #'
 #' @return A summarised result
 #'
@@ -77,7 +78,8 @@ summariseIndication <- function(cohort,
                                 indexDate = "cohort_start_date",
                                 mutuallyExclusive = TRUE,
                                 censorDate = NULL,
-                                inObservation = TRUE) {
+                                inObservation = TRUE,
+                                restrictIncident = FALSE) {
   res <- .summariseIntersect(
     cohort = cohort,
     cohortId = {{cohortId}},
@@ -90,6 +92,7 @@ summariseIndication <- function(cohort,
     indexDate = indexDate,
     censorDate = censorDate,
     inObservation = inObservation,
+    restrictIncident = restrictIncident,
     nm = "indications"
   )
 
@@ -109,7 +112,8 @@ summariseIndication <- function(cohort,
         indication_cohort_name = indicationCohortName,
         index_date = indexDate,
         censor_date = as.character(censorDate %||% "observation_period_end_date"),
-        in_observation = as.character(inObservation)
+        in_observation = as.character(inObservation),
+        restrict_incident = as.character(restrictIncident)
       )
     )
 }
@@ -126,6 +130,7 @@ summariseIndication <- function(cohort,
 #' @inheritParams censorDateDoc
 #' @inheritParams mutuallyExclusiveDoc
 #' @inheritParams inObservationDoc
+#' @inheritParams restrictIncidentCohortDoc
 #'
 #' @return A summary of treatments stratified by cohort_name and strata_name
 #'
@@ -152,7 +157,8 @@ summariseTreatment <- function(cohort,
                                indexDate = "cohort_start_date",
                                censorDate = NULL,
                                mutuallyExclusive = FALSE,
-                               inObservation = TRUE) {
+                               inObservation = TRUE,
+                               restrictIncident = FALSE) {
   res <- .summariseIntersect(
     cohort = cohort,
     cohortId = {{cohortId}},
@@ -165,6 +171,7 @@ summariseTreatment <- function(cohort,
     indexDate = indexDate,
     censorDate = censorDate,
     inObservation = inObservation,
+    restrictIncident = restrictIncident,
     nm = "medications"
   )
 
@@ -183,7 +190,8 @@ summariseTreatment <- function(cohort,
         treatment_cohort_name = treatmentCohortName,
         index_date = as.character(indexDate),
         censor_date = as.character(censorDate %||% "observation_period_end_date"),
-        in_observation = as.character(inObservation)
+        in_observation = as.character(inObservation),
+        restrict_incident = as.character(restrictIncident)
       )
     )
 }
@@ -199,6 +207,7 @@ summariseTreatment <- function(cohort,
                                 indexDate,
                                 censorDate,
                                 inObservation,
+                                restrictIncident,
                                 nm,
                                 call = parent.frame()) {
   # initial checks
@@ -213,6 +222,7 @@ summariseTreatment <- function(cohort,
   window <- omopgenerics::validateWindowArgument(window, call = call)
   names(window) <- paste0("win", seq_along(window))
   omopgenerics::assertLogical(inObservation, length = 1, call = call)
+  omopgenerics::assertLogical(restrictIncident, length = 1, call = call)
 
   if (length(cohortTableId) > 5 & isTRUE(mutuallyExclusive)) {
     n <- length(cohortTableId)
@@ -235,6 +245,7 @@ summariseTreatment <- function(cohort,
         unknownTable = unknownTable,
         indexDate = indexDate,
         censorDate = censorDate,
+        restrictIncident = restrictIncident,
         name = omopgenerics::uniqueTableName(prefix),
         nm = nm,
         nameStyle = "xyz_{window_name}"

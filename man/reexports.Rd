@@ -23,6 +23,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{omopgenerics}{\code{\link[omopgenerics]{additionalColumns}}, \code{\link[omopgenerics]{attrition}}, \code{\link[omopgenerics]{bind}}, \code{\link[omopgenerics]{cohortCodelist}}, \code{\link[omopgenerics]{cohortCount}}, \code{\link[omopgenerics]{exportSummarisedResult}}, \code{\link[omopgenerics]{groupColumns}}, \code{\link[omopgenerics]{importSummarisedResult}}, \code{\link[omopgenerics]{settings}}, \code{\link[omopgenerics]{settingsColumns}}, \code{\link[omopgenerics]{strataColumns}}, \code{\link[omopgenerics]{suppress}}, \code{\link[omopgenerics:reexports]{tidy}}}
+  \item{omopgenerics}{\code{\link[omopgenerics:additionalColumns]{additionalColumns()}}, \code{\link[omopgenerics:attrition]{attrition()}}, \code{\link[omopgenerics:bind]{bind()}}, \code{\link[omopgenerics:cohortCodelist]{cohortCodelist()}}, \code{\link[omopgenerics:cohortCount]{cohortCount()}}, \code{\link[omopgenerics:exportSummarisedResult]{exportSummarisedResult()}}, \code{\link[omopgenerics:groupColumns]{groupColumns()}}, \code{\link[omopgenerics:importSummarisedResult]{importSummarisedResult()}}, \code{\link[omopgenerics:settings]{settings()}}, \code{\link[omopgenerics:settingsColumns]{settingsColumns()}}, \code{\link[omopgenerics:strataColumns]{strataColumns()}}, \code{\link[omopgenerics:suppress]{suppress()}}, \code{\link[omopgenerics:tidy]{tidy}}}
 }}
 
