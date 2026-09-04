@@ -101,7 +101,7 @@ library(CDMConnector)
 
 cdm <- mockDrugUtilisation(source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpLkCdqs/duckdb
+#> ℹ /tmp/RtmpTLeUtZ/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
