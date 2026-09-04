@@ -19,3 +19,4 @@ README.Rmd
 ^vignettes/summarise_treatments.Rmd
 ^vignettes/treatment_discontinuation.Rmd
 ^vignettes/drug_restart.Rmd
+^test_data$

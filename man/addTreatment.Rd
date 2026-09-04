@@ -46,8 +46,8 @@ if \code{FALSE}, each cohort is reported independently.}
 will be created.}
 
 \item{restrictIncident}{Whether to include only target cohort records that
-start during the analysis period. If \code{FALSE}, all target cohort records
-that overlap with the study period will be included.}
+start during the analysis period. If FALSE, all target cohort records that
+overlap with the study period will be included.}
 }
 \value{
 The original table with a variable added that summarises the

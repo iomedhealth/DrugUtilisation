@@ -27,6 +27,7 @@ export(exportSummarisedResult)
 export(generateAtcCohortSet)
 export(generateDrugUtilisationCohortSet)
 export(generateIngredientCohortSet)
+export(generateTherapyLineCohortSet)
 export(groupColumns)
 export(importSummarisedResult)
 export(mockDrugUtilisation)
@@ -36,6 +37,7 @@ export(plotDrugRestart)
 export(plotDrugUtilisation)
 export(plotIndication)
 export(plotProportionOfPatientsCovered)
+export(plotTherapyLineSankey)
 export(plotTreatment)
 export(requireDrugInDateRange)
 export(requireIsFirstDrugEntry)
@@ -60,20 +62,24 @@ export(tableIndication)
 export(tableProportionOfPatientsCovered)
 export(tableTreatment)
 export(tidy)
-importFrom(omopgenerics,additionalColumns)
-importFrom(omopgenerics,attrition)
-importFrom(omopgenerics,bind)
-importFrom(omopgenerics,cohortCodelist)
-importFrom(omopgenerics,cohortCount)
-importFrom(omopgenerics,exportSummarisedResult)
-importFrom(omopgenerics,groupColumns)
-importFrom(omopgenerics,importSummarisedResult)
-importFrom(omopgenerics,settings)
-importFrom(omopgenerics,settingsColumns)
-importFrom(omopgenerics,strataColumns)
-importFrom(omopgenerics,suppress)
-importFrom(omopgenerics,tidy)
-importFrom(rlang,"%||%")
-importFrom(rlang,":=")
-importFrom(rlang,.data)
-importFrom(rlang,.env)
+importFrom(omopgenerics,
+  additionalColumns,
+  attrition,
+  bind,
+  cohortCodelist,
+  cohortCount,
+  exportSummarisedResult,
+  groupColumns,
+  importSummarisedResult,
+  settings,
+  settingsColumns,
+  strataColumns,
+  suppress,
+  tidy
+)
+importFrom(rlang,
+  "%||%",
+  ":=",
+  .data,
+  .env
+)
