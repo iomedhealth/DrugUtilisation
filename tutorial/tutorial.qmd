@@ -49,9 +49,9 @@ install.packages("DrugUtilisation")
 
 -   [v1.1.0](https://cran.r-project.org/package=DrugUtilisation) on cran.
 
--   [package website](https://darwin-eu.github.io/DrugUtilisation/)
+-   [package website](https://iomedhealth.github.io/DrugUtilisation/)
 
--   [Report an issue/Feature request](https://github.com/darwin-eu/DrugUtilisation/issues/new)
+-   [Report an issue/Feature request](https://github.com/iomedhealth/DrugUtilisation/issues/new)
 
 ## Create a reference to a cdm object
 
@@ -672,7 +672,7 @@ plotTreatment(comedications, style = "darwin")
 
 ::::: {style="display: flex; align-items: center; justify-content: space-between;"}
 ::: {style="flex: 1;"}
-👉 [**Packages website**](https://darwin-eu.github.io/DrugUtilisation/)\
+👉 [**Packages website**](https://iomedhealth.github.io/DrugUtilisation/)\
 👉 [**CRAN link**](https://cran.r-project.org/package=DrugUtilisation)\
 👉 [**Manual**](https://cran.r-project.org/web/packages/DrugUtilisation/DrugUtilisation.pdf)
 
@@ -680,6 +680,6 @@ plotTreatment(comedications, style = "darwin")
 :::
 
 ::: {style="flex: 1; text-align: center;"}
-<img src="https://github.com/darwin-eu/DrugUtilisation/blob/main/man/figures/logo.png?raw=true" width="600"/>
+<img src="https://github.com/iomedhealth/DrugUtilisation/blob/main/man/figures/logo.png?raw=true" width="600"/>
 :::
 :::::

@@ -54,20 +54,15 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
     subject_id = c(3, 3, 3, 3, 3, 3, 3, 5, 5, 5),
     cohort_start_date = c(
       obs_p1$start + 10, obs_p1$start + 20, obs_p1$start + 30, obs_p1$start + 30,
-      obs_p1$start + 150, obs_p1$start + 160, obs_p1$start + 160,
-      obs_p2$start + 10, obs_p2$start + 150, obs_p2$start + 160
+      obs_p1$start + 120, obs_p1$start + 130, obs_p1$start + 130,
+      obs_p2$start + 10, obs_p2$start + 120, obs_p2$start + 130
     ),
     cohort_end_date = c(
       obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50,
-      obs_p1$start + 200, obs_p1$start + 200, obs_p1$start + 200,
-      obs_p2$start + 50, obs_p2$start + 180, obs_p2$start + 180
+      obs_p1$start + 160, obs_p1$start + 160, obs_p1$start + 160,
+      obs_p2$start + 50, obs_p2$start + 160, obs_p2$start + 160
     )
   )
-
-  treatments <- treatments |>
-    dplyr::inner_join(obs_dates |> dplyr::rename(subject_id = person_id), by = "subject_id") |>
-    dplyr::filter(cohort_start_date >= start, cohort_end_date <= end) |>
-    dplyr::select(-start, -end)
 
   treatSet <- dplyr::tibble(
     cohort_definition_id = 1:6,
@@ -110,6 +105,9 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
 
   sankey <- plotTherapyLineSankey(cdm$lot_mm)
   expect_s3_class(sankey, "plotly")
+
+  dur <- summariseTherapyLineDuration(cdm$lot_mm)
+  expect_true(all(c("n_patients", "median_ttnl_days", "median_ttnl_months") %in% colnames(dur)))
 
   dropCreatedTables(cdm = cdm)
 })

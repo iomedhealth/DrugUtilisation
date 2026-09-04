@@ -13,8 +13,8 @@ Summarise patient-level drug utilisation cohorts using data mapped to the Observ
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://darwin-eu.github.io/DrugUtilisation/}
-  \item Report bugs at \url{https://github.com/darwin-eu/DrugUtilisation/issues}
+  \item \url{https://iomedhealth.github.io/DrugUtilisation/}
+  \item Report bugs at \url{https://github.com/iomedhealth/DrugUtilisation/issues}
 }
 
 }

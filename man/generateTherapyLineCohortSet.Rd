@@ -17,48 +17,31 @@ generateTherapyLineCohortSet(
 )
 }
 \arguments{
-\item{cdm}{A CDM reference object created with \code{CDMConnector}.}
+\item{cdm}{A CDM reference object.}
 
 \item{name}{Name of the output cohort table created in the CDM.}
 
-\item{cohort}{Name of the base patient cohort table in \code{cdm}.}
+\item{cohort}{Name of the base patient cohort table.}
 
-\item{cohortId}{Cohort definition ID(s) in \code{cohort} to restrict to. If \code{NULL}, all cohorts in \code{cohort} are included.}
+\item{cohortId}{Cohort definition ID(s) in \code{cohort} to include. If NULL, uses all.}
 
-\item{treatmentCohortName}{Name of the cohort table in \code{cdm} containing treatment exposures.}
+\item{treatmentCohortName}{Name of the cohort table or concept set containing drug exposures.}
 
-\item{treatmentCohortId}{Cohort definition ID(s) in \code{treatmentCohortName} to restrict to. If \code{NULL}, all cohorts are included.}
+\item{treatmentCohortId}{Cohort definition ID(s) in \code{treatmentCohortName}. If NULL, uses all.}
 
-\item{regimenRules}{List or data frame defining multi-drug combination rules. If a named list, names represent regimen labels
-and values are character vectors of drug/concept names (e.g. \code{list("Dara-VRd" = c("daratumumab", "bortezomib", "lenalidomide", "dexamethasone"))}).}
+\item{regimenRules}{List or dataframe defining multi-drug combination rules and hierarchy ranking.}
 
-\item{gapEra}{Number of days for the landmark window and line transition gap (default: \code{60}).}
+\item{gapEra}{Number of days for the landmark window and line transition gap (default: 60).}
 
-\item{maintenanceModalities}{Character vector of drug or procedure labels that do not advance line number (e.g. \code{c("ASCT (Transplant)", "lenalidomide")}).}
+\item{maintenanceModalities}{Character vector of regimens or procedure labels that do not advance line number.}
 }
 \value{
-A \code{cohort_table} object created in \code{cdm} with subcohorts for each line number and regimen combination.
-Metadata attributes stored in \code{omopgenerics::settings(cdm[[name]])} include \code{cohort_definition_id}, \code{cohort_name},
-\code{line_number}, and \code{regimen_name}.
+A cohort table in \code{cdm} with subcohorts for each line order and regimen combination.
 }
 \description{
 Generates sequential Line of Therapy (LOT) subcohorts for patients in a base
-patient cohort based on treatment exposure records. Handles multi-drug regimen
-identification, landmark gap windows, and maintenance modalities according to
-OHDSI / DARWIN-EU standards.
-}
-\details{
-The algorithm identifies sequential therapy lines for each patient in \code{cohort}:
-\itemize{
-\item \strong{Follow-Up Intersect}: Only treatment records starting within patient cohort follow-up are considered.
-\item \strong{Line Start & Landmark Window}: The first exposure starts Line 1. Exposures starting within
-\code{gapEra} days from line start form the combination regimen for that line.
-\item \strong{Maintenance Modalities}: Exposures matching \code{maintenanceModalities} or starting within \code{gapEra}
-days from the preceding exposure end date are subsumed into the current line without advancing line index.
-\item \strong{Line Transition}: An exposure starting after the gap window triggers transition to the next line.
-\item \strong{Regimen Inference}: Multi-drug combinations in each line are matched against \code{regimenRules}
-or concatenated alphabetically into regimen labels (e.g. \code{Dara-VRd}, \code{Isa-Kd}, \code{VRd}).
-}
+cohort based on treatment exposure records. Handles multi-drug regimen
+identification, landmark gap windows, and maintenance modalities.
 }
 \examples{
 \donttest{
