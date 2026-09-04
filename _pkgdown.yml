@@ -40,6 +40,11 @@ reference:
   - generateAtcCohortSet
   - erafyCohort
   - cohortGapEra
+- subtitle: Generate and visualize Line of Therapy (LOT) cohorts
+  desc: Generate sequential Line of Therapy (LOT) subcohorts and visualize treatment transitions with Sankey diagrams
+- contents:
+  - generateTherapyLineCohortSet
+  - plotTherapyLineSankey
 - subtitle: Apply inclusion criteria to drug cohorts
   desc: Apply inclusion criteria that filter drug cohort entries based on specified rules.
 - contents:

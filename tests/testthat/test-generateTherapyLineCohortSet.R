@@ -60,9 +60,14 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
     cohort_end_date = c(
       obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50,
       obs_p1$start + 200, obs_p1$start + 200, obs_p1$start + 200,
-      obs_p2$start + 50, obs_p2$start + 200, obs_p2$start + 200
+      obs_p2$start + 50, obs_p2$start + 180, obs_p2$start + 180
     )
   )
+
+  treatments <- treatments |>
+    dplyr::inner_join(obs_dates |> dplyr::rename(subject_id = person_id), by = "subject_id") |>
+    dplyr::filter(cohort_start_date >= start, cohort_end_date <= end) |>
+    dplyr::select(-start, -end)
 
   treatSet <- dplyr::tibble(
     cohort_definition_id = 1:6,
