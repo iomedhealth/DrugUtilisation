@@ -432,7 +432,18 @@ plotTherapyLineSankey <- function(cohort,
         )
       )
 
-    all_links <- dplyr::bind_rows(active_links, terminal_links)
+    eof_lines <- sort(unique(transitions$line_number[is.na(transitions$next_mapped_regimen) & transitions$line_number < max_line_in_data]))
+    dummy_links <- dplyr::tibble()
+    if (length(eof_lines) > 1) {
+      dummy_links <- dplyr::tibble(
+        source_label = paste0("Line ", eof_lines[-length(eof_lines)], ": End of Follow-Up"),
+        target_label = paste0("Line ", eof_lines[-1], ": End of Follow-Up"),
+        value = 0.000001,
+        hover_info = ""
+      )
+    }
+
+    all_links <- dplyr::bind_rows(active_links, terminal_links, dummy_links)
   } else {
     all_links <- active_links
   }
@@ -466,7 +477,6 @@ plotTherapyLineSankey <- function(cohort,
       orig_line = as.numeric(sub("^Line ([0-9]+):.*", "\\1", .data$label)),
       is_terminal = grepl("End of Follow-Up", .data$label, fixed = TRUE),
       is_other = grepl("Other Regimens", .data$label, fixed = TRUE),
-      # Target column for 'Line L: End of Follow-Up' is column L + 1
       col_step = dplyr::if_else(.data$is_terminal, .data$orig_line + 1, .data$orig_line)
     ) |>
     dplyr::arrange(
@@ -479,23 +489,12 @@ plotTherapyLineSankey <- function(cohort,
   node_labels <- node_info$label
   node_dict <- setNames(seq_along(node_labels) - 1L, node_labels)
 
-  # Column x and y coordinates for active regimens and terminal target nodes
+  # Column x coordinates for active regimens and terminal target nodes
   if (max_line_in_data > min_line_in_data) {
     node_x <- (node_info$col_step - min_line_in_data) / (max_line_in_data - min_line_in_data)
     node_x <- pmax(0.001, pmin(0.999, node_x))
   } else {
     node_x <- rep(0.5, length(node_labels))
-  }
-
-  node_y <- numeric(length(node_labels))
-  for (c_step in unique(node_info$col_step)) {
-    indices <- which(node_info$col_step == c_step)
-    k <- length(indices)
-    if (k == 1) {
-      node_y[indices] <- 0.5
-    } else {
-      node_y[indices] <- seq(0.05, 0.95, length.out = k)
-    }
   }
 
   colors_palette <- c(
@@ -519,12 +518,11 @@ plotTherapyLineSankey <- function(cohort,
 
   plotly::plot_ly(
     type = "sankey",
-    arrangement = "fixed",
+    arrangement = "snap",
     orientation = "h",
     node = list(
       label = node_labels,
       x = node_x,
-      y = node_y,
       color = node_colors,
       pad = 15,
       thickness = 20,
