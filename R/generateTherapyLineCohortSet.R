@@ -374,6 +374,7 @@ plotTherapyLineSankey <- function(cohort,
     dplyr::inner_join(df_mapped, by = c("line_number", "regimen_name"))
 
   max_line_in_data <- max(df$line_number)
+  min_line_in_data <- min(df$line_number)
 
   transitions <- df |>
     dplyr::group_by(.data$subject_id) |>
@@ -440,31 +441,56 @@ plotTherapyLineSankey <- function(cohort,
     cli::cli_abort("No transitions found between lines in LOT cohort.")
   }
 
-  node_labels <- unique(c(all_links$source_label, all_links$target_label))
+  # Calculate volume for each label to sort nodes from largest to smallest volume
+  src_vols <- all_links |>
+    dplyr::group_by(label = .data$source_label) |>
+    dplyr::summarise(vol_src = sum(.data$value), .groups = "drop")
+
+  tgt_vols <- all_links |>
+    dplyr::group_by(label = .data$target_label) |>
+    dplyr::summarise(vol_tgt = sum(.data$value), .groups = "drop")
+
+  node_vols <- dplyr::full_join(src_vols, tgt_vols, by = "label") |>
+    dplyr::mutate(
+      vol_src = dplyr::coalesce(.data$vol_src, 0),
+      vol_tgt = dplyr::coalesce(.data$vol_tgt, 0),
+      vol = pmax(.data$vol_src, .data$vol_tgt)
+    )
+
+  unique_labels <- unique(c(all_links$source_label, all_links$target_label))
+
+  node_info <- dplyr::tibble(label = unique_labels) |>
+    dplyr::left_join(node_vols, by = "label") |>
+    dplyr::mutate(
+      vol = dplyr::coalesce(.data$vol, 0),
+      orig_line = as.numeric(sub("^Line ([0-9]+):.*", "\\1", .data$label)),
+      is_terminal = grepl("End of Follow-Up", .data$label, fixed = TRUE),
+      is_other = grepl("Other Regimens", .data$label, fixed = TRUE),
+      # Target column for 'Line L: End of Follow-Up' is column L + 1
+      col_step = dplyr::if_else(.data$is_terminal, .data$orig_line + 1, .data$orig_line)
+    ) |>
+    dplyr::arrange(
+      .data$col_step,
+      .data$is_terminal,     # Terminal nodes at bottom
+      .data$is_other,        # 'Other Regimens' near bottom
+      dplyr::desc(.data$vol) # Largest volume at top
+    )
+
+  node_labels <- node_info$label
   node_dict <- setNames(seq_along(node_labels) - 1L, node_labels)
 
-  # Compute node x and y positions based on line number step
-  node_lines <- purrr::map_dbl(node_labels, \(lbl) {
-    l_num <- as.numeric(sub("^Line ([0-9]+):.*", "\\1", lbl))
-    if (grepl("End of Follow-Up", lbl, fixed = TRUE)) {
-      l_num <- l_num + 1
-    }
-    l_num
-  })
+  # Column x and y coordinates for active regimens and terminal target nodes
+  if (max_line_in_data > min_line_in_data) {
+    node_x <- (node_info$col_step - min_line_in_data) / (max_line_in_data - min_line_in_data)
+    node_x <- pmax(0.001, pmin(0.999, node_x))
+  } else {
+    node_x <- rep(0.5, length(node_labels))
+  }
 
-  max_line <- max(node_lines, na.rm = TRUE)
-  min_line <- min(node_lines, na.rm = TRUE)
-
-  node_x <- numeric(length(node_labels))
   node_y <- numeric(length(node_labels))
-
-  for (l in unique(node_lines)) {
-    indices <- which(node_lines == l)
+  for (c_step in unique(node_info$col_step)) {
+    indices <- which(node_info$col_step == c_step)
     k <- length(indices)
-    x_val <- if (max_line > min_line) (l - min_line) / (max_line - min_line) else 0.5
-    x_val <- max(0.001, min(0.999, x_val))
-    node_x[indices] <- x_val
-
     if (k == 1) {
       node_y[indices] <- 0.5
     } else {
@@ -493,7 +519,7 @@ plotTherapyLineSankey <- function(cohort,
 
   plotly::plot_ly(
     type = "sankey",
-    arrangement = "snap",
+    arrangement = "fixed",
     orientation = "h",
     node = list(
       label = node_labels,

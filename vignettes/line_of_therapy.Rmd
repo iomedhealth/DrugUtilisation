@@ -1,0 +1,160 @@
+---
+title: "Generating and visualising Line of Therapy (LOT) cohorts"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Generating and visualising Line of Therapy (LOT) cohorts}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+In oncology and hematology (e.g., Multiple Myeloma), patients often receive complex, multi-agent drug regimens sequentially over time. As patients progress or experience toxicity, treatments are adjusted, forming sequential **Lines of Therapy (LOT)** ($1\text{L}, 2\text{L}, 3\text{L}, \dots$).
+
+The `DrugUtilisation` package provides two core functions for Line of Therapy analyses in OMOP CDM databases:
+
+1. **`generateTherapyLineCohortSet()`**: Maps overlapping ingredient exposures into combination regimens and constructs sequential therapy line subcohorts.
+2. **`plotTherapyLineSankey()`**: Creates an interactive Plotly Sankey diagram illustrating regimen transitions, tail-regimen aggregation (`"Other Regimens"`), and patient attrition (`"End of Follow-Up"`).
+
+---
+
+# Setting Up Multiple Myeloma Treatment Cohorts
+
+Let's set up a mock OMOP CDM database containing key Multiple Myeloma (MM) treatment ingredients and a base patient cohort.
+
+- **Proteasome Inhibitors**: Bortezomib
+- **Immunomodulatory Drugs (IMiDs)**: Lenalidomide
+- **Anti-CD38 Monoclonal Antibodies**: Daratumumab
+
+```{r setup, message = FALSE, warning = FALSE}
+library(DrugUtilisation)
+library(dplyr, warn.conflicts = FALSE)
+library(omopgenerics)
+library(plotly)
+
+# Create a mock CDM
+cdm <- mockDrugUtilisation(numberIndividual = 300, source = "duckdb")
+
+# Extract observation period window to build realistic test exposures
+obs <- cdm$observation_period |>
+  collect() |>
+  filter(observation_period_start_date + 365 < observation_period_end_date) |>
+  head(50)
+
+# 1. Create Base Multiple Myeloma Cohort
+base_df <- obs |>
+  transmute(
+    cohort_definition_id = 1L,
+    subject_id = person_id,
+    cohort_start_date = observation_period_start_date,
+    cohort_end_date = observation_period_end_date
+  )
+
+cdm <- insertTable(cdm = cdm, name = "mm_base", table = base_df)
+cdm$mm_base <- cdm$mm_base |> newCohortTable()
+
+# 2. Create Sequential Treatment Exposures (1L Bortezomib, 2L Lenalidomide, 3L Daratumumab)
+exp1 <- obs |>
+  transmute(
+    cohort_definition_id = 1L,
+    subject_id = person_id,
+    cohort_start_date = observation_period_start_date + 10,
+    cohort_end_date = observation_period_start_date + 80
+  )
+
+exp2 <- obs |>
+  transmute(
+    cohort_definition_id = 2L,
+    subject_id = person_id,
+    cohort_start_date = observation_period_start_date + 150,
+    cohort_end_date = observation_period_start_date + 220
+  )
+
+exp3 <- obs |>
+  transmute(
+    cohort_definition_id = 3L,
+    subject_id = person_id,
+    cohort_start_date = observation_period_start_date + 280,
+    cohort_end_date = observation_period_start_date + 350
+  )
+
+df_exp <- bind_rows(exp1, exp2, exp3)
+
+trt_set <- tibble(
+  cohort_definition_id = 1:3,
+  cohort_name = c("bortezomib", "lenalidomide", "daratumumab")
+)
+
+cdm <- insertTable(cdm = cdm, name = "mm_treatments", table = df_exp)
+cdm$mm_treatments <- cdm$mm_treatments |> newCohortTable(cohortSetRef = trt_set)
+
+cohortCount(cdm$mm_treatments)
+```
+
+---
+
+# Generating Line of Therapy Subcohorts
+
+We call `generateTherapyLineCohortSet()` to map overlapping exposures into combination regimens and construct sequential lines of therapy.
+
+### Key Parameters:
+
+- **`cohort`**: Base patient population cohort table name (`"mm_base"`).
+- **`treatmentCohortName`**: Cohort table containing drug exposures (`"mm_treatments"`).
+- **`gapEra`**: Treatment interruption threshold (in days, e.g., 60). Gaps longer than `gapEra` trigger a line transition.
+- **`maintenanceModalities`**: Specifies single-agent modalities allowed to continue as maintenance without advancing the line number.
+
+```{r generate_lot, message = FALSE, warning = FALSE}
+cdm <- generateTherapyLineCohortSet(
+  cdm = cdm,
+  name = "mm_lot_cohorts",
+  cohort = "mm_base",
+  treatmentCohortName = "mm_treatments",
+  gapEra = 60
+)
+
+# Inspect generated LOT cohorts
+cdm$mm_lot_cohorts |>
+  cohortCount()
+```
+
+---
+
+# Visualising Treatment Transitions with Sankey Diagrams
+
+To inspect treatment patterns and transitions across therapy lines, `plotTherapyLineSankey()` generates an interactive Plotly Sankey diagram.
+
+### Key Design Features:
+
+- **Top Regimen Coverage (`coverageThreshold = 0.80`)**: At each line step, regimens representing the top $80\%$ cumulative volume are displayed individually, while long-tail regimens are grouped into `"Other Regimens"`.
+- **End of Follow-Up Stream**: Patients who discontinue treatment or exit follow-up transition into `"End of Follow-Up"`.
+- **Vertical Column Alignment**: Step positions ($x/y$ coordinates) are strictly enforced so that each therapy line forms a distinct vertical column.
+
+```{r plot_sankey, message = FALSE, warning = FALSE, eval = FALSE}
+# Generate interactive Sankey diagram
+p <- plotTherapyLineSankey(
+  cohort = cdm$mm_lot_cohorts,
+  maxLines = 4,
+  coverageThreshold = 0.80
+)
+
+p
+```
+
+---
+
+# Summary
+
+- `generateTherapyLineCohortSet()` automates the construction of complex, multi-agent therapy lines in OMOP CDM datasets.
+- `plotTherapyLineSankey()` produces clean, interactive Plotly visualizations suitable for observational research, clinical dashboards, and regulatory submissions.

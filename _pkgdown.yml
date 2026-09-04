@@ -30,6 +30,7 @@ articles:
   - summarise_treatments
   - treatment_discontinuation
   - drug_restart
+  - line_of_therapy
 
 reference:
 - subtitle: Generate a set of drug cohorts
@@ -45,6 +46,7 @@ reference:
 - contents:
   - generateTherapyLineCohortSet
   - plotTherapyLineSankey
+  - summariseTherapyLineDuration
 - subtitle: Apply inclusion criteria to drug cohorts
   desc: Apply inclusion criteria that filter drug cohort entries based on specified rules.
 - contents:
