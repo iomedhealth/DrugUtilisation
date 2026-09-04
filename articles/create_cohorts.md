@@ -44,7 +44,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 cdm <- mockDrugUtilisation(numberIndividuals = 100, source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp51nlDz/duckdb
+#> ℹ /tmp/Rtmp2XlwjY/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -459,7 +459,7 @@ cdm2 <- mockDrugUtilisation(drug_exposure = tibble(
   drug_exposure_end_date = as.Date(c("2020-01-30", "2020-02-15"))
 ), source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp51nlDz/duckdb
+#> ℹ /tmp/Rtmp2XlwjY/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -616,16 +616,16 @@ cdm$acetaminophen_cohort
 #> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1/:memory:]
 #>    cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                   <int>      <int> <date>            <date>         
-#>  1                    1         43 2008-12-22        2009-07-31     
-#>  2                    1         58 2017-09-07        2018-09-13     
-#>  3                    1         25 2020-03-05        2020-05-07     
-#>  4                    1         49 2015-11-03        2017-05-04     
-#>  5                    1         98 1972-02-29        1972-11-04     
-#>  6                    1         12 2005-11-10        2012-03-21     
-#>  7                    1         55 1999-11-01        2004-05-03     
-#>  8                    1         60 1994-10-13        2000-11-25     
-#>  9                    1         66 2017-09-11        2017-09-23     
-#> 10                    1          3 2014-03-17        2015-03-01     
+#>  1                    1         85 2014-03-12        2014-04-11     
+#>  2                    1         49 2015-11-03        2017-05-04     
+#>  3                    1         98 1972-02-29        1972-11-04     
+#>  4                    1          6 2019-12-21        2020-04-08     
+#>  5                    1         93 2006-09-22        2008-01-06     
+#>  6                    1          3 2014-03-17        2015-03-01     
+#>  7                    1         62 2006-06-21        2014-05-13     
+#>  8                    1         43 2008-12-22        2009-07-31     
+#>  9                    1         58 2017-09-07        2018-09-13     
+#> 10                    1         25 2020-03-05        2020-05-07     
 #> # ℹ more rows
 ```
 
@@ -747,16 +747,16 @@ cdm$acetaminophen_cohort
 #> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1/:memory:]
 #>    cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                   <int>      <int> <date>            <date>         
-#>  1                    1         43 2008-12-22        2009-07-31     
-#>  2                    1         58 2017-09-07        2018-09-13     
-#>  3                    1         25 2020-03-05        2020-05-07     
-#>  4                    1         49 2015-11-03        2017-05-04     
-#>  5                    1         98 1972-02-29        1972-11-04     
-#>  6                    1         12 2005-11-10        2012-03-21     
-#>  7                    1         55 1999-11-01        2004-05-03     
-#>  8                    1         60 1994-10-13        2000-11-25     
-#>  9                    1         66 2017-09-11        2017-09-23     
-#> 10                    1          3 2014-03-17        2015-03-01     
+#>  1                    1         85 2014-03-12        2014-04-11     
+#>  2                    1         49 2015-11-03        2017-05-04     
+#>  3                    1         98 1972-02-29        1972-11-04     
+#>  4                    1          6 2019-12-21        2020-04-08     
+#>  5                    1         93 2006-09-22        2008-01-06     
+#>  6                    1          3 2014-03-17        2015-03-01     
+#>  7                    1         62 2006-06-21        2014-05-13     
+#>  8                    1         43 2008-12-22        2009-07-31     
+#>  9                    1         58 2017-09-07        2018-09-13     
+#> 10                    1         25 2020-03-05        2020-05-07     
 #> # ℹ more rows
 ```
 
