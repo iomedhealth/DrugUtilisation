@@ -64,7 +64,7 @@ cdm$insulin |>
 ## Assess drug restart
 
 The
-[`summariseDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDrugRestart.md)
+[`summariseDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDrugRestart.md)
 function analyses the outcomes within a treatment cohort following the
 first exposure to a specific drug. It categorises the events into four
 distinct groups:
@@ -196,15 +196,15 @@ results <- cdm$cohort1 |>
 
 The package has table and plot functions to help visualising the results
 from
-[`summariseDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDrugRestart.md).
+[`summariseDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDrugRestart.md).
 
 ### Table
 
 The function
-[`tableDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/tableDrugRestart.md)
+[`tableDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/tableDrugRestart.md)
 will create a gt, flextable or tibble table from the summarised_result
 object created with
-[`summariseDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDrugRestart.md).
+[`summariseDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDrugRestart.md).
 This function offers multiple customisation options to format the
 resulting table according to the user preferences.
 
@@ -222,7 +222,7 @@ results |>
 ### Plot
 
 The
-[`plotDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/plotDrugRestart.md)
+[`plotDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/plotDrugRestart.md)
 function creates a bar plot depicting the percentage of drug restart
 events for each cohort, stratum, and follow-up time (specified in the
 variable_name column of the summarised result). This function offers
@@ -241,7 +241,7 @@ results |>
 We can directly add the drug restart information to an existing cohort
 as a column instead of asking for a summarising object. In this case we
 will use the function
-[`addDrugRestart()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugRestart.md),
+[`addDrugRestart()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugRestart.md),
 which will add one column per follow-up window we ask for:
 
 ``` r
@@ -257,16 +257,16 @@ cdm$metformin |>
 #> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1/:memory:]
 #>    cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                   <int>      <int> <date>            <date>         
-#>  1                    1        121 2019-05-17        2019-11-13     
-#>  2                    1        128 2021-08-20        2021-08-20     
-#>  3                    1         19 2009-03-10        2011-04-27     
-#>  4                    1         99 2020-03-12        2020-04-10     
-#>  5                    1          4 2009-05-01        2009-11-27     
-#>  6                    1         54 1987-06-05        1990-04-03     
-#>  7                    1        191 2019-11-02        2020-04-17     
-#>  8                    1        103 2010-11-18        2014-07-23     
-#>  9                    1         59 2019-09-08        2020-06-19     
-#> 10                    1        116 2016-12-01        2017-06-29     
+#>  1                    1         98 2014-07-10        2016-02-06     
+#>  2                    1        129 2020-01-10        2020-08-31     
+#>  3                    1         59 2019-09-08        2020-06-19     
+#>  4                    1        103 2010-11-18        2014-07-23     
+#>  5                    1        116 2016-12-01        2017-06-29     
+#>  6                    1        191 2019-11-02        2020-04-17     
+#>  7                    1          4 2009-05-01        2009-11-27     
+#>  8                    1         54 1987-06-05        1990-04-03     
+#>  9                    1        121 2019-05-17        2019-11-13     
+#> 10                    1        128 2021-08-20        2021-08-20     
 #> # ℹ more rows
 #> # ℹ 3 more variables: drug_restart_180 <chr>, drug_restart_365 <chr>,
 #> #   drug_restart_inf <chr>

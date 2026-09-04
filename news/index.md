@@ -6,10 +6,10 @@ CRAN release: 2026-08-21
 
 - Add restrictIncident parameter for intersect functions by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#785](https://github.com/darwin-eu/DrugUtilisation/issues/785)
+  [\#785](https://github.com/iomedhealth/DrugUtilisation/issues/785)
 - Run benchmark in a 100000 sample by default by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#786](https://github.com/darwin-eu/DrugUtilisation/issues/786)
+  [\#786](https://github.com/iomedhealth/DrugUtilisation/issues/786)
 
 ## DrugUtilisation 1.3.0
 
@@ -17,29 +17,29 @@ CRAN release: 2026-07-24
 
 - Speed up proportion of patients covered by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#775](https://github.com/darwin-eu/DrugUtilisation/issues/775)
+  [\#775](https://github.com/iomedhealth/DrugUtilisation/issues/775)
 - Discontinuation day is the first unexposed day by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#776](https://github.com/darwin-eu/DrugUtilisation/issues/776)
+  [\#776](https://github.com/iomedhealth/DrugUtilisation/issues/776)
 - Default of not in observation by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#777](https://github.com/darwin-eu/DrugUtilisation/issues/777)
+  [\#777](https://github.com/iomedhealth/DrugUtilisation/issues/777)
 - fix tests by [@catalamarti](https://github.com/catalamarti) in
-  [\#778](https://github.com/darwin-eu/DrugUtilisation/issues/778)
+  [\#778](https://github.com/iomedhealth/DrugUtilisation/issues/778)
 - restrict to first discontinuation in
   summariseDiscontinuationAsSurvival by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#779](https://github.com/darwin-eu/DrugUtilisation/issues/779)
+  [\#779](https://github.com/iomedhealth/DrugUtilisation/issues/779)
 - Breaking change: replace the `notInObservation` argument in
-  [`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md)
+  [`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md)
   and
-  [`summariseIndication()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseIndication.md)
+  [`summariseIndication()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseIndication.md)
   with the logical `inObservation` argument, which defaults to `TRUE`.
   by [@catalamarti](https://github.com/catalamarti) in
-  [\#780](https://github.com/darwin-eu/DrugUtilisation/issues/780)
+  [\#780](https://github.com/iomedhealth/DrugUtilisation/issues/780)
 - Consistent documentation by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#781](https://github.com/darwin-eu/DrugUtilisation/issues/781)
+  [\#781](https://github.com/iomedhealth/DrugUtilisation/issues/781)
 
 ## DrugUtilisation 1.2.1
 
@@ -47,13 +47,13 @@ CRAN release: 2026-07-03
 
 - Fix erafyCohort for Sql Server by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#760](https://github.com/darwin-eu/DrugUtilisation/issues/760)
+  [\#760](https://github.com/iomedhealth/DrugUtilisation/issues/760)
 - Fix casting issue in Sql Server by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#769](https://github.com/darwin-eu/DrugUtilisation/issues/769)
+  [\#769](https://github.com/iomedhealth/DrugUtilisation/issues/769)
 - Fix cumulative incidence table and plots by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#770](https://github.com/darwin-eu/DrugUtilisation/issues/770)
+  [\#770](https://github.com/iomedhealth/DrugUtilisation/issues/770)
 
 ## DrugUtilisation 1.2.0
 
@@ -61,32 +61,32 @@ CRAN release: 2026-06-18
 
 - add tutorial in the website by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#751](https://github.com/darwin-eu/DrugUtilisation/issues/751)
+  [\#751](https://github.com/iomedhealth/DrugUtilisation/issues/751)
 - Speed up benchmark with PPC only 365 days by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#755](https://github.com/darwin-eu/DrugUtilisation/issues/755)
+  [\#755](https://github.com/iomedhealth/DrugUtilisation/issues/755)
 - Create
-  [`summariseDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDiscontinuationAsSurvival.md),
-  [`tableDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/tableDiscontinuationAsSurvival.md)
+  [`summariseDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDiscontinuationAsSurvival.md),
+  [`tableDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/tableDiscontinuationAsSurvival.md)
   and
-  [`plotDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/plotDiscontinuationAsSurvival.md)
+  [`plotDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/plotDiscontinuationAsSurvival.md)
   by [@catalamarti](https://github.com/catalamarti) in
-  [\#757](https://github.com/darwin-eu/DrugUtilisation/issues/757)
-  [\#763](https://github.com/darwin-eu/DrugUtilisation/issues/763)
+  [\#757](https://github.com/iomedhealth/DrugUtilisation/issues/757)
+  [\#763](https://github.com/iomedhealth/DrugUtilisation/issues/763)
 - add notInObservation argument for summariseTreatment and
   summariseIndication by [@catalamarti](https://github.com/catalamarti)
-  in [\#759](https://github.com/darwin-eu/DrugUtilisation/issues/759)
+  in [\#759](https://github.com/iomedhealth/DrugUtilisation/issues/759)
 - Fix empty cohorts by [@catalamarti](https://github.com/catalamarti) in
-  [\#764](https://github.com/darwin-eu/DrugUtilisation/issues/764)
+  [\#764](https://github.com/iomedhealth/DrugUtilisation/issues/764)
 
 ## DrugUtilisation 1.1.0
 
 CRAN release: 2026-01-28
 
 - Export
-  [`addDailyDose()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDailyDose.md)
+  [`addDailyDose()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDailyDose.md)
   function by [@catalamarti](https://github.com/catalamarti) in
-  [\#749](https://github.com/darwin-eu/DrugUtilisation/issues/749)
+  [\#749](https://github.com/iomedhealth/DrugUtilisation/issues/749)
 
 ## DrugUtilisation 1.0.5
 
@@ -94,32 +94,32 @@ CRAN release: 2025-11-19
 
 - Explictly copy data into the database using insertTable by
   [@ablack3](https://github.com/ablack3) in
-  [\#727](https://github.com/darwin-eu/DrugUtilisation/issues/727)
+  [\#727](https://github.com/iomedhealth/DrugUtilisation/issues/727)
 - Correct as.numeric of datediff by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#731](https://github.com/darwin-eu/DrugUtilisation/issues/731)
+  [\#731](https://github.com/iomedhealth/DrugUtilisation/issues/731)
 - Add style argument in tables and figures by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#734](https://github.com/darwin-eu/DrugUtilisation/issues/734)
+  [\#734](https://github.com/iomedhealth/DrugUtilisation/issues/734)
 - Call libraries explicitly in vignettes by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#739](https://github.com/darwin-eu/DrugUtilisation/issues/739)
+  [\#739](https://github.com/iomedhealth/DrugUtilisation/issues/739)
 - Include in vignette how to use days prescribed by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#743](https://github.com/darwin-eu/DrugUtilisation/issues/743)
+  [\#743](https://github.com/iomedhealth/DrugUtilisation/issues/743)
 - tests edge case by [@catalamarti](https://github.com/catalamarti) in
-  [\#744](https://github.com/darwin-eu/DrugUtilisation/issues/744)
+  [\#744](https://github.com/iomedhealth/DrugUtilisation/issues/744)
 - Support local datasets and standardise testing by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#736](https://github.com/darwin-eu/DrugUtilisation/issues/736)
+  [\#736](https://github.com/iomedhealth/DrugUtilisation/issues/736)
 - Review mock data vignette by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#745](https://github.com/darwin-eu/DrugUtilisation/issues/745)
+  [\#745](https://github.com/iomedhealth/DrugUtilisation/issues/745)
 - add plotIndication params by [@ginberg](https://github.com/ginberg) in
-  [\#740](https://github.com/darwin-eu/DrugUtilisation/issues/740)
+  [\#740](https://github.com/iomedhealth/DrugUtilisation/issues/740)
 - add type and style as NULL to use default values by
   [@catalamarti](https://github.com/catalamarti) in
-  [\#747](https://github.com/darwin-eu/DrugUtilisation/issues/747)
+  [\#747](https://github.com/iomedhealth/DrugUtilisation/issues/747)
 
 ## DrugUtilisation 1.0.4
 

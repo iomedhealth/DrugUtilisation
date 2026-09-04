@@ -9,9 +9,9 @@ characteristics, indication and drug use summarised.
 
 Useful links:
 
-- <https://darwin-eu.github.io/DrugUtilisation/>
+- <https://iomedhealth.github.io/DrugUtilisation/>
 
-- Report bugs at <https://github.com/darwin-eu/DrugUtilisation/issues>
+- Report bugs at <https://github.com/iomedhealth/DrugUtilisation/issues>
 
 ## Author
 

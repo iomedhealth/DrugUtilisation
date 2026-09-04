@@ -15,16 +15,16 @@ These cohorts can be subsetted to the exposures of interest applying the
 different inclusion criteria:
 
 - Require that entries are in a certain date range
-  [`requireDrugInDateRange()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireDrugInDateRange.md).
+  [`requireDrugInDateRange()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireDrugInDateRange.md).
 
 - Subset to the first entry
-  [`requireIsFirstDrugEntry()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md).
+  [`requireIsFirstDrugEntry()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md).
 
 - Require a certain time in observation before the entries
-  [`requireObservationBeforeDrug()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md).
+  [`requireObservationBeforeDrug()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md).
 
 - Require a certain time before exposure
-  [`requirePriorDrugWashout()`](https://darwin-eu.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md).
+  [`requirePriorDrugWashout()`](https://iomedhealth.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md).
 
 ## Creating a `cdm_reference` object
 
@@ -44,7 +44,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 cdm <- mockDrugUtilisation(numberIndividuals = 100, source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpDlHUVx/duckdb
+#> ℹ /tmp/Rtmp51nlDz/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -362,17 +362,17 @@ cohortCodelist(cdm$acetaminophen_cohort, cohortId = 1)
 ### Analogous functions
 
 The function
-[`generateDrugUtilisationCohortSet()`](https://darwin-eu.github.io/DrugUtilisation/reference/generateDrugUtilisationCohortSet.md)
+[`generateDrugUtilisationCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateDrugUtilisationCohortSet.md)
 has two analogous functions:
 
-- [`generateAtcCohortSet()`](https://darwin-eu.github.io/DrugUtilisation/reference/generateAtcCohortSet.md)
+- [`generateAtcCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateAtcCohortSet.md)
   to generate cohorts using ATC labels.
-- [`generateIngredientCohortSet()`](https://darwin-eu.github.io/DrugUtilisation/reference/generateIngredientCohortSet.md)
+- [`generateIngredientCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateIngredientCohortSet.md)
   to generate cohorts using ingredients names.
 
 Both functions allow to create cohorts and have all the same arguments
 than
-[`generateDrugUtilisationCohortSet()`](https://darwin-eu.github.io/DrugUtilisation/reference/generateDrugUtilisationCohortSet.md)
+[`generateDrugUtilisationCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateDrugUtilisationCohortSet.md)
 the main difference is that instead of the `conceptSet` argument we have
 the `atcName` argument and the `ingredient` argument. Also both
 functions have the `...` argument that is used by
@@ -459,7 +459,7 @@ cdm2 <- mockDrugUtilisation(drug_exposure = tibble(
   drug_exposure_end_date = as.Date(c("2020-01-30", "2020-02-15"))
 ), source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpDlHUVx/duckdb
+#> ℹ /tmp/Rtmp51nlDz/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -583,20 +583,20 @@ Once we have created our base cohort using a conceptSet and a gapEra we
 can apply different restrictions:
 
 - require a prior unexposed time:
-  [`requirePriorDrugWashout()`](https://darwin-eu.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md)
+  [`requirePriorDrugWashout()`](https://iomedhealth.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md)
 - require that it is the first entry:
-  [`requireIsFirstDrugEntry()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
+  [`requireIsFirstDrugEntry()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
 - require a prior observation in the cdm:
-  [`requireObservationBeforeDrug()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md)
+  [`requireObservationBeforeDrug()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md)
 - require that date are within a certain interval:
-  [`requireDrugInDateRange()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireDrugInDateRange.md)
+  [`requireDrugInDateRange()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireDrugInDateRange.md)
 
 ### `requirePriorDrugWashout()`
 
 To require that the cohort entries (drug episodes) are incident we would
 usually define a time (`days`) where the individual is not exposed to
 the drug. This can be achieved using
-[`requirePriorDrugWashout()`](https://darwin-eu.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md)
+[`requirePriorDrugWashout()`](https://iomedhealth.github.io/DrugUtilisation/reference/requirePriorDrugWashout.md)
 function. In this example we would restrict to individuals with 365 days
 of no exposure:
 
@@ -616,16 +616,16 @@ cdm$acetaminophen_cohort
 #> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1/:memory:]
 #>    cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                   <int>      <int> <date>            <date>         
-#>  1                    1         29 2016-04-02        2019-11-13     
-#>  2                    1         24 2014-03-28        2014-08-09     
-#>  3                    1         15 1972-01-05        1983-04-19     
-#>  4                    1         35 1998-04-20        1998-10-22     
-#>  5                    1         87 2017-10-01        2018-03-12     
-#>  6                    1         34 2009-06-19        2009-06-28     
-#>  7                    1         13 1986-11-20        1987-02-12     
-#>  8                    1         72 2013-08-02        2013-12-04     
-#>  9                    1         18 2011-04-22        2013-11-13     
-#> 10                    1         18 2016-02-01        2016-10-22     
+#>  1                    1         43 2008-12-22        2009-07-31     
+#>  2                    1         58 2017-09-07        2018-09-13     
+#>  3                    1         25 2020-03-05        2020-05-07     
+#>  4                    1         49 2015-11-03        2017-05-04     
+#>  5                    1         98 1972-02-29        1972-11-04     
+#>  6                    1         12 2005-11-10        2012-03-21     
+#>  7                    1         55 1999-11-01        2004-05-03     
+#>  8                    1         60 1994-10-13        2000-11-25     
+#>  9                    1         66 2017-09-11        2017-09-23     
+#> 10                    1          3 2014-03-17        2015-03-01     
 #> # ℹ more rows
 ```
 
@@ -728,7 +728,7 @@ attrition(cdm$my_new_cohort)
 
 To require that the cohort entry (drug episodes) is the first one of the
 available ones we can use the
-[`requireIsFirstDrugEntry()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
+[`requireIsFirstDrugEntry()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
 function. See example:
 
 ``` r
@@ -747,16 +747,16 @@ cdm$acetaminophen_cohort
 #> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1/:memory:]
 #>    cohort_definition_id subject_id cohort_start_date cohort_end_date
 #>                   <int>      <int> <date>            <date>         
-#>  1                    1         29 2016-04-02        2019-11-13     
-#>  2                    1         24 2014-03-28        2014-08-09     
-#>  3                    1         15 1972-01-05        1983-04-19     
-#>  4                    1         35 1998-04-20        1998-10-22     
-#>  5                    1         87 2017-10-01        2018-03-12     
-#>  6                    1         34 2009-06-19        2009-06-28     
-#>  7                    1         13 1986-11-20        1987-02-12     
-#>  8                    1         72 2013-08-02        2013-12-04     
-#>  9                    1         18 2011-04-22        2013-11-13     
-#> 10                    1         45 2008-04-06        2008-04-13     
+#>  1                    1         43 2008-12-22        2009-07-31     
+#>  2                    1         58 2017-09-07        2018-09-13     
+#>  3                    1         25 2020-03-05        2020-05-07     
+#>  4                    1         49 2015-11-03        2017-05-04     
+#>  5                    1         98 1972-02-29        1972-11-04     
+#>  6                    1         12 2005-11-10        2012-03-21     
+#>  7                    1         55 1999-11-01        2004-05-03     
+#>  8                    1         60 1994-10-13        2000-11-25     
+#>  9                    1         66 2017-09-11        2017-09-23     
+#> 10                    1          3 2014-03-17        2015-03-01     
 #> # ℹ more rows
 ```
 
@@ -804,7 +804,7 @@ attrition(cdm$acetaminophen_cohort)
 
 To require that a cohort entry (drug episodes) has a certain time of
 prior observation we can use the
-[`requireObservationBeforeDrug()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md)
+[`requireObservationBeforeDrug()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireObservationBeforeDrug.md)
 function. See example:
 
 ``` r
@@ -882,7 +882,7 @@ attrition(cdm$acetaminophen_cohort)
 
 To require that a cohort entry (drug episodes) has a certain date within
 an specific range we can use the
-[`requireDrugInDateRange()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireDrugInDateRange.md)
+[`requireDrugInDateRange()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireDrugInDateRange.md)
 function. In general you would like to apply this restriction to the
 incident date (cohort_start_date), but the function is flexible and you
 can use it to restrict to any other date. See example:
@@ -997,7 +997,7 @@ In this case we will see the result of combining in different ways 4
 inclusion criteria:
 
 - **first**:
-  [`requireIsFirstDrugEntry()`](https://darwin-eu.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
+  [`requireIsFirstDrugEntry()`](https://iomedhealth.github.io/DrugUtilisation/reference/requireIsFirstDrugEntry.md)
 - **washout**: `requirePriorDrugWashout(days = 365)`
 - **minObs**: `requireObservationBeforeDrug(days = 365)`
 - **2011-2012**

@@ -84,9 +84,9 @@ summariseDiscontinuationAsSurvival(
 
 A `<summarised_result>` object that contains the probability to not
 discontinue over time and the summary statistics. Use
-[`tableDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/tableDiscontinuationAsSurvival.md)
+[`tableDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/tableDiscontinuationAsSurvival.md)
 and
-[`plotDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/plotDiscontinuationAsSurvival.md)
+[`plotDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/plotDiscontinuationAsSurvival.md)
 to visualise the results.
 
 ## Examples
@@ -130,7 +130,7 @@ result <- summariseDiscontinuationAsSurvival(cdm$cohort1)
 #> Getting overall estimates
 #> `eventgap`, `outcome_washout`, `censor_on_cohort_exit`, `follow_up_days`, and
 #> `minimum_survival_days` cast to character.
-#> ✔ Discontinuation analysis for cohort_3 completed in 1s.
+#> ✔ Discontinuation analysis for cohort_3 completed in 2s.
 
 plotDiscontinuationAsSurvival(result)
 #> Warning: Removed 3 rows containing missing values or values outside the scale range

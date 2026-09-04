@@ -4,7 +4,7 @@
 
 In this vignette is assessed how daily dose is calculated in the
 DrugUtilisation package. This function is used internally in
-[`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md).
+[`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md).
 
 ### Daily dose
 
@@ -284,7 +284,7 @@ codelist using the function:
 [`CodelistGenerator::stratifyByRouteCategory()`](https://darwin-eu.github.io/CodelistGenerator/reference/stratifyByRouteCategory.html).
 
 To better inspect the content of the output of
-[`summariseDoseCoverage()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDoseCoverage.md)
+[`summariseDoseCoverage()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDoseCoverage.md)
 we can create a gt table like so:
 
 ``` r

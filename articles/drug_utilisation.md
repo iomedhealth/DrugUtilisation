@@ -53,7 +53,7 @@ drugConcepts <- getDrugIngredientCodes(cdm = cdm, name = c("acetaminophen", "sim
 ### addNumberExposures()
 
 With the function
-**[`addNumberExposures()`](https://darwin-eu.github.io/DrugUtilisation/reference/addNumberExposures.md)**
+**[`addNumberExposures()`](https://iomedhealth.github.io/DrugUtilisation/reference/addNumberExposures.md)**
 we can get how many exposures to acetaminophen each patient in our
 cohort had during a certain time. There are 2 thing to keep in mind when
 using this function:
@@ -152,7 +152,7 @@ calculation:
     indexDate and ended afterwards will also be taken into account.
 
 The subfunction to get only this information is
-[`addDaysExposed()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDaysExposed.md).
+[`addDaysExposed()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDaysExposed.md).
 
 ### daysPrescribed
 
@@ -165,7 +165,7 @@ TRUE, drug prescriptions will only be counted if happening after index
 date; if FALSE, all prescriptions will contribute to the sum.
 
 The subfunction to get only this information is
-[`addDaysPrescribed()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDaysPrescribed.md).
+[`addDaysPrescribed()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDaysPrescribed.md).
 
 ### timeToExposure
 
@@ -178,7 +178,7 @@ interval is measured; otherwise, exposures that start before the
 to exposure is 0).
 
 The subfunction to get only this information is
-[`addTimeToExposure()`](https://darwin-eu.github.io/DrugUtilisation/reference/addTimeToExposure.md).
+[`addTimeToExposure()`](https://iomedhealth.github.io/DrugUtilisation/reference/addTimeToExposure.md).
 
 ### initialExposureDuration
 
@@ -189,7 +189,7 @@ Otherwise, the first record ever will be the one contributing this
 number.
 
 The subfunction to get only this information is
-[`addInitialExposureDuration()`](https://darwin-eu.github.io/DrugUtilisation/reference/addInitialExposureDuration.md).
+[`addInitialExposureDuration()`](https://iomedhealth.github.io/DrugUtilisation/reference/addInitialExposureDuration.md).
 
 ### initialQuantity and cumulativeQuantity
 
@@ -203,9 +203,9 @@ for both measures `restrictIncident` is considered, while `gapEra` is
 used for the `cumulative quantity`.
 
 The subfunctions to get this information are
-[`addInitialQuantity()`](https://darwin-eu.github.io/DrugUtilisation/reference/addInitialQuantity.md)
+[`addInitialQuantity()`](https://iomedhealth.github.io/DrugUtilisation/reference/addInitialQuantity.md)
 and
-[`addCumulativeQuantity()`](https://darwin-eu.github.io/DrugUtilisation/reference/addCumulativeQuantity.md)
+[`addCumulativeQuantity()`](https://iomedhealth.github.io/DrugUtilisation/reference/addCumulativeQuantity.md)
 respectively.
 
 ### initialDailyDose and cumulativeDose
@@ -218,16 +218,16 @@ Recall that `restrictIncident` is considered in these calculations, and
 that the cumulative dose also considers `gapEra`.
 
 The subfunctions to get this information are
-[`addInitialDailyDose()`](https://darwin-eu.github.io/DrugUtilisation/reference/addInitialDailyDose.md)
+[`addInitialDailyDose()`](https://iomedhealth.github.io/DrugUtilisation/reference/addInitialDailyDose.md)
 and
-[`addCumulativeDose()`](https://darwin-eu.github.io/DrugUtilisation/reference/addCumulativeDose.md)
+[`addCumulativeDose()`](https://iomedhealth.github.io/DrugUtilisation/reference/addCumulativeDose.md)
 respectively.
 
 ### addDrugUtilisation()
 
 All the explained **`add`** functions are subfunctions of the more
 comprehensive
-**[`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md)**.
+**[`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md)**.
 This broader function computes multiple drug utilization metrics.
 
 ``` r
@@ -256,7 +256,7 @@ addDrugUtilisation(
 ```
 
 - Using
-  [`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
+  [`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
   is recommended when multiple parameters are needed, as it is more
   computationally efficient than chaining the different subfunctions.
 
@@ -318,8 +318,8 @@ cdm$drug_utilisation_example |>
 #> $ future_observation                                                  <date> 2…
 #> $ cumulative_quantity_ingredient_1503297_descendants                  <dbl> 0,…
 #> $ cumulative_quantity_ingredient_1125315_descendants                  <dbl> 0,…
-#> $ initial_quantity_ingredient_1125315_descendants                     <dbl> 0,…
 #> $ initial_quantity_ingredient_1503297_descendants                     <dbl> 0,…
+#> $ initial_quantity_ingredient_1125315_descendants                     <dbl> 0,…
 #> $ cumulative_dose_milligram_ingredient_1125315_descendants_1125315    <dbl> 0,…
 #> $ initial_daily_dose_milligram_ingredient_1125315_descendants_1125315 <dbl> 0,…
 #> $ cumulative_dose_milligram_ingredient_1503297_descendants_1503297    <dbl> 0,…
@@ -329,16 +329,16 @@ cdm$drug_utilisation_example |>
 ## Summarise drug utilisation information
 
 The information given by
-[`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
+[`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
 or its sub-functions is at patient level. If we are interested in
 aggregated estimates for these measure we can use
-[`summariseDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDrugUtilisation.md).
+[`summariseDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDrugUtilisation.md).
 
 ### summariseDrugUtilisation()
 
 This function will provide the desired estimates (set in the argument
 `estimates`) of the targeted drug utilisation measures. Similar to
-[`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md),
+[`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md),
 by setting TRUE or FALSE each of the drug utilisation measures, the user
 can choose which measures to obtain.
 
@@ -458,9 +458,9 @@ quantity, and the number (`count_missing`) (and percentage
 ### tableDrugUtilisation()
 
 Results from
-[`summariseDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDrugUtilisation.md)
+[`summariseDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDrugUtilisation.md)
 can be nicely visualised in a tabular format using the function
-[`tableDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/tableDrugUtilisation.md).
+[`tableDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/tableDrugUtilisation.md).
 
 ``` r
 

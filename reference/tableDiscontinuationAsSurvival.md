@@ -82,7 +82,7 @@ tableDiscontinuationAsSurvival(
 ## Value
 
 A table with a formatted version of
-[`summariseDiscontinuationAsSurvival()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseDiscontinuationAsSurvival.md)
+[`summariseDiscontinuationAsSurvival()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseDiscontinuationAsSurvival.md)
 results.
 
 ## Examples
@@ -104,7 +104,7 @@ result <- summariseDiscontinuationAsSurvival(cdm$cohort1)
 #> Getting overall estimates
 #> `eventgap`, `outcome_washout`, `censor_on_cohort_exit`, `follow_up_days`, and
 #> `minimum_survival_days` cast to character.
-#> ✔ Discontinuation analysis for cohort_1 completed in 1s.
+#> ✔ Discontinuation analysis for cohort_1 completed in 2s.
 #> ℹ Calculating discontinuation for cohort_2.
 #> ℹ Subsetting table to cohort of interest.
 #> ℹ Preparing discontinuation (outcome) cohort.

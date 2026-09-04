@@ -69,7 +69,7 @@ settings(cdm$cohort2)
 ## Summarise treatment
 
 The
-[`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md)
+[`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md)
 function produces a summary of the treatment received by our study
 cohorts. There are three mandatory arguments:
 
@@ -79,7 +79,7 @@ cohorts. There are three mandatory arguments:
     should be summarised.
 
 See an example of its usage below, where we use
-[`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md)
+[`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md)
 to summarise treatments defined in `cohort2` in the target cohorts
 defined in `cohort1`.
 
@@ -120,7 +120,7 @@ the cohort id 1 in our cohort table) across the cohorts defined in
 ### other parameters
 
 The
-[`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md)
+[`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md)
 functions also has other input parameters which can be tuned:
 
 - `cohortId`: to restrict the analysis to a particular cohort definition
@@ -185,16 +185,16 @@ these analyses would provide different results in other contexts.
 
 The package includes `table` and `plot` functions to help visualise the
 results from
-[`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md),
+[`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md),
 like we have just used to show the results above.
 
 ### Tables
 
 The
-[`tableTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/tableTreatment.md)
+[`tableTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/tableTreatment.md)
 function generates a table in gt, flextable, or tibble format from the
 summarised_result produced by
-[`summariseTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/summariseTreatment.md).
+[`summariseTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/summariseTreatment.md).
 This function has customisation options to format the table according to
 user preferences.
 
@@ -211,7 +211,7 @@ tableTreatment(result = results)
 ### Plots
 
 The
-[`plotTreatment()`](https://darwin-eu.github.io/DrugUtilisation/reference/plotTreatment.md)
+[`plotTreatment()`](https://iomedhealth.github.io/DrugUtilisation/reference/plotTreatment.md)
 function creates a bar plot showing the percentage of treated and
 untreated in each cohort, stratum, and time-window. This function offers
 customization options for colors, faceting, and handling of strata.

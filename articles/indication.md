@@ -84,10 +84,10 @@ cdm[["acetaminophen_users"]] |>
 #> Rows: ??
 #> Columns: 5
 #> $ cohort_definition_id <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-#> $ subject_id           <int> 101, 114, 784, 784, 820, 820, 1070, 1079, 1246, 1…
-#> $ cohort_start_date    <date> 1986-12-21, 2018-08-24, 1967-11-18, 1970-12-22, …
-#> $ cohort_end_date      <date> 1987-01-04, 2018-09-07, 1967-11-25, 1970-12-29, …
-#> $ indication_m30_to_0  <chr> "none", "none", "bronchitis", "none", "none", "br…
+#> $ subject_id           <int> 23, 99, 99, 279, 328, 362, 579, 695, 695, 806, 11…
+#> $ cohort_start_date    <date> 1997-02-04, 1959-06-22, 1968-10-21, 1992-02-12, …
+#> $ cohort_end_date      <date> 1997-03-04, 1959-07-06, 1968-11-20, 1992-02-26, …
+#> $ indication_m30_to_0  <chr> "none", "none", "none", "none", "none", "none", "…
 ```
 
 We can see that individuals are classified as having sinusistis (without
@@ -100,7 +100,7 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpjUkknz/file230b63364216.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmp3NNxhY/file21f93841cc2.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
 #> 1 bronchitis                2527
@@ -129,14 +129,14 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpjUkknz/file230b63364216.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmp3NNxhY/file21f93841cc2.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
 #> 1 none                         7
 #> 2 bronchitis and sinusitis     3
-#> 3 unknown                  11344
-#> 4 bronchitis                2527
-#> 5 sinusitis                   18
+#> 3 bronchitis                2527
+#> 4 sinusitis                   18
+#> 5 unknown                  11344
 ```
 
 We can add indications for multiple time windows. Unsurprisingly we find
@@ -156,7 +156,7 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_0_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpjUkknz/file230b63364216.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmp3NNxhY/file21f93841cc2.duckdb]
 #>   indication_0_to_0     n
 #>   <chr>             <dbl>
 #> 1 bronchitis         2524
@@ -167,23 +167,23 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpjUkknz/file230b63364216.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmp3NNxhY/file21f93841cc2.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
 #> 1 bronchitis                2527
 #> 2 sinusitis                   18
-#> 3 unknown                  11344
+#> 3 bronchitis and sinusitis     3
 #> 4 none                         7
-#> 5 bronchitis and sinusitis     3
+#> 5 unknown                  11344
 cdm[["acetaminophen_users"]] |>
   group_by(indication_m365_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpjUkknz/file230b63364216.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmp3NNxhY/file21f93841cc2.duckdb]
 #>   indication_m365_to_0         n
 #>   <chr>                    <dbl>
-#> 1 bronchitis                2615
-#> 2 sinusitis                  211
+#> 1 sinusitis                  211
+#> 2 bronchitis                2615
 #> 3 bronchitis and sinusitis   101
 #> 4 none                         4
 #> 5 unknown                  10968
@@ -194,7 +194,7 @@ cdm[["acetaminophen_users"]] |>
 Instead of adding variables with indications like above, we could
 instead obtain a general summary of observed indications.
 `summariseIndication` has similar arguments to
-[`addIndication()`](https://darwin-eu.github.io/DrugUtilisation/reference/addIndication.md),
+[`addIndication()`](https://iomedhealth.github.io/DrugUtilisation/reference/addIndication.md),
 but returns a summary result of the indication.
 
 ``` r

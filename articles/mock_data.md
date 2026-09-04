@@ -9,7 +9,7 @@ library(dplyr, warn.conflicts = FALSE)
 ## Introduction
 
 In this vignette we will see how to use
-[`mockDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/mockDrugUtilisation.md)
+[`mockDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/mockDrugUtilisation.md)
 function to create mock data. This function is predominantly used in
 this package’s unit testing.
 
@@ -170,7 +170,7 @@ Alternatively you can use the `source` argument to insert the cdm to a
 
 cdm <- mockDrugUtilisation(source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpWjnxua/duckdb
+#> ℹ /tmp/RtmpUOUGup/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -227,7 +227,7 @@ If we would run it again the result will be different:
 
 cdm <- mockDrugUtilisation(source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpWjnxua/duckdb
+#> ℹ /tmp/RtmpUOUGup/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -266,7 +266,7 @@ initially:
 set.seed(seed = 1)
 cdm <- mockDrugUtilisation(source = "duckdb")
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpWjnxua/duckdb
+#> ℹ /tmp/RtmpUOUGup/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -414,7 +414,7 @@ lapply(cdm, \(x) x |> tally() |> pull())
 #### Customise omop tables
 
 As we saw previously, the omop tables are automatically populated in
-[`mockDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/mockDrugUtilisation.md).
+[`mockDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/mockDrugUtilisation.md).
 However, the user can customise these tables. For example, to customise
 `drug_exposure` table, one could do the following:
 

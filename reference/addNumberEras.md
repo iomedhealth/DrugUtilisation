@@ -1,7 +1,7 @@
 # To add a new column with the number of eras. To add multiple columns use `addDrugUtilisation()` for efficiency.
 
 To add a new column with the number of eras. To add multiple columns use
-[`addDrugUtilisation()`](https://darwin-eu.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
+[`addDrugUtilisation()`](https://iomedhealth.github.io/DrugUtilisation/reference/addDrugUtilisation.md)
 for efficiency.
 
 ## Usage
