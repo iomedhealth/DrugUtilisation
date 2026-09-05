@@ -119,7 +119,7 @@ useful to test the package:</p>
 <span></span>
 <span><span class="va">cdm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mockDrugUtilisation.html">mockDrugUtilisation</a></span><span class="op">(</span>numberIndividuals <span class="op">=</span> <span class="fl">100</span>, source <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp4HeYot/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpFDBXj9/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -473,7 +473,7 @@ example:</p>
 <span>  drug_exposure_end_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-30"</span>, <span class="st">"2020-02-15"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span>, source <span class="op">=</span> <span class="st">"duckdb"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/Rtmp4HeYot/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpFDBXj9/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -611,15 +611,15 @@ criteria:</p>
 <span><span class="co">#&gt;    cohort_definition_id subject_id cohort_start_date cohort_end_date</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>                    1          8 2006-04-08        2011-01-02     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                    1         26 1994-12-01        1995-04-02     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                    1         59 2007-06-20        2008-06-28     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                    1         31 2017-07-13        2022-03-30     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                    1         86 2016-09-16        2017-04-30     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                    1         48 2015-08-18        2016-12-08     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                    1         89 2020-06-17        2022-03-03     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                    1         95 2018-09-22        2018-11-05     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                    1         77 2013-06-10        2015-12-06     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                    1         92 1994-01-24        2008-02-21     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                    1         31 2017-07-13        2022-03-30     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                    1         77 2013-06-10        2015-12-06     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                    1         92 1994-01-24        2008-02-21     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                    1         89 2020-06-17        2022-03-03     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                    1         95 2018-09-22        2018-11-05     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                    1         26 1994-12-01        1995-04-02     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                    1         86 2016-09-16        2017-04-30     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                    1        100 2010-06-06        2010-06-29     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                    1         41 1988-03-31        1995-06-17     </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span></code></pre></div>
 <p>This would also get recorded in the attrition, counts and
 settings.</p>
@@ -721,15 +721,15 @@ criteria:</p>
 <span><span class="co">#&gt;    cohort_definition_id subject_id cohort_start_date cohort_end_date</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>         </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>                    1          8 2006-04-08        2011-01-02     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                    1         26 1994-12-01        1995-04-02     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                    1         59 2007-06-20        2008-06-28     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                    1         31 2017-07-13        2022-03-30     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                    1         86 2016-09-16        2017-04-30     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                    1         48 2015-08-18        2016-12-08     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                    1         89 2020-06-17        2022-03-03     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                    1         95 2018-09-22        2018-11-05     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                    1         77 2013-06-10        2015-12-06     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                    1         92 1994-01-24        2008-02-21     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                    1         31 2017-07-13        2022-03-30     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                    1         77 2013-06-10        2015-12-06     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                    1         92 1994-01-24        2008-02-21     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                    1         89 2020-06-17        2022-03-03     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                    1         95 2018-09-22        2018-11-05     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                    1         26 1994-12-01        1995-04-02     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                    1         86 2016-09-16        2017-04-30     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                    1        100 2010-06-06        2010-06-29     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                    1         41 1988-03-31        1995-06-17     </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span></code></pre></div>
 <p>This would also get recorded in the attrition, counts and settings on
 top of the already exiting ones.</p>

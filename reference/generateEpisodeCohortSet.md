@@ -56,7 +56,18 @@ A CDM reference object with the new episode cohort table added.
 ``` r
 # \donttest{
 library(DrugUtilisation)
-cdm <- mockDrugUtilisation()
+episode <- dplyr::tibble(
+  episode_id = 1,
+  person_id = 1,
+  episode_concept_id = 32531,
+  episode_object_concept_id = 1125360,
+  episode_start_date = as.Date("2020-01-01"),
+  episode_end_date = as.Date("2020-01-30")
+)
+cdm <- mockDrugUtilisation(episode = episode)
+#> Warning: episode table not included in cdm because:
+#> Error in `newOmopTable()`: ! episode_type_concept_id is not present in table
+#> episode
 
 cdm <- generateEpisodeCohortSet(
   cdm = cdm,

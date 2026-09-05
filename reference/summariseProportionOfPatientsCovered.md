@@ -66,16 +66,16 @@ tidy(result)
 #> # A tibble: 1,098 × 11
 #>    cdm_name cohort_name variable_name variable_level time  outcome_count
 #>    <chr>    <chr>       <chr>         <chr>          <chr>         <int>
-#>  1 DUS MOCK cohort_1    overall       overall        0                33
-#>  2 DUS MOCK cohort_1    overall       overall        1                31
-#>  3 DUS MOCK cohort_1    overall       overall        2                31
-#>  4 DUS MOCK cohort_1    overall       overall        3                31
-#>  5 DUS MOCK cohort_1    overall       overall        4                31
-#>  6 DUS MOCK cohort_1    overall       overall        5                31
-#>  7 DUS MOCK cohort_1    overall       overall        6                31
-#>  8 DUS MOCK cohort_1    overall       overall        7                30
-#>  9 DUS MOCK cohort_1    overall       overall        8                30
-#> 10 DUS MOCK cohort_1    overall       overall        9                30
+#>  1 DUS MOCK cohort_1    overall       overall        0                36
+#>  2 DUS MOCK cohort_1    overall       overall        1                35
+#>  3 DUS MOCK cohort_1    overall       overall        2                35
+#>  4 DUS MOCK cohort_1    overall       overall        3                35
+#>  5 DUS MOCK cohort_1    overall       overall        4                35
+#>  6 DUS MOCK cohort_1    overall       overall        5                35
+#>  7 DUS MOCK cohort_1    overall       overall        6                34
+#>  8 DUS MOCK cohort_1    overall       overall        7                34
+#>  9 DUS MOCK cohort_1    overall       overall        8                34
+#> 10 DUS MOCK cohort_1    overall       overall        9                34
 #> # ℹ 1,088 more rows
 #> # ℹ 5 more variables: denominator_count <int>, ppc <dbl>, ppc_lower <dbl>,
 #> #   ppc_upper <dbl>, cohort_table_name <chr>
