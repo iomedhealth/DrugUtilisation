@@ -84,10 +84,10 @@ cdm[["acetaminophen_users"]] |>
 #> Rows: ??
 #> Columns: 5
 #> $ cohort_definition_id <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-#> $ subject_id           <int> 311, 363, 439, 442, 726, 726, 871, 1072, 1289, 13…
-#> $ cohort_start_date    <date> 2008-01-04, 1990-08-25, 1980-06-15, 1992-08-08, …
-#> $ cohort_end_date      <date> 2008-01-18, 1990-09-22, 1980-06-29, 1992-08-22, …
-#> $ indication_m30_to_0  <chr> "none", "none", "none", "none", "none", "none", "…
+#> $ subject_id           <int> 370, 546, 559, 738, 812, 825, 864, 890, 890, 1132…
+#> $ cohort_start_date    <date> 2004-09-25, 1990-04-22, 1989-01-26, 1990-08-21, …
+#> $ cohort_end_date      <date> 2004-10-02, 1990-04-29, 1989-02-09, 1990-09-04, …
+#> $ indication_m30_to_0  <chr> "bronchitis", "none", "none", "none", "bronchitis…
 ```
 
 We can see that individuals are classified as having sinusistis (without
@@ -100,7 +100,7 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpiLBFuA/file22271e7498ad.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmpme5hBf/file22321a661e06.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
 #> 1 bronchitis                2527
@@ -129,13 +129,13 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpiLBFuA/file22271e7498ad.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmpme5hBf/file22321a661e06.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
-#> 1 bronchitis and sinusitis     3
-#> 2 none                         7
-#> 3 bronchitis                2527
-#> 4 sinusitis                   18
+#> 1 bronchitis                2527
+#> 2 sinusitis                   18
+#> 3 none                         7
+#> 4 bronchitis and sinusitis     3
 #> 5 unknown                  11344
 ```
 
@@ -156,36 +156,36 @@ cdm[["acetaminophen_users"]] |>
   group_by(indication_0_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpiLBFuA/file22271e7498ad.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmpme5hBf/file22321a661e06.duckdb]
 #>   indication_0_to_0     n
 #>   <chr>             <dbl>
 #> 1 unknown           11211
-#> 2 none                163
-#> 3 sinusitis             1
+#> 2 sinusitis             1
+#> 3 none                163
 #> 4 bronchitis         2524
 cdm[["acetaminophen_users"]] |>
   group_by(indication_m30_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpiLBFuA/file22271e7498ad.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmpme5hBf/file22321a661e06.duckdb]
 #>   indication_m30_to_0          n
 #>   <chr>                    <dbl>
 #> 1 bronchitis                2527
 #> 2 sinusitis                   18
-#> 3 bronchitis and sinusitis     3
-#> 4 none                         7
+#> 3 none                         7
+#> 4 bronchitis and sinusitis     3
 #> 5 unknown                  11344
 cdm[["acetaminophen_users"]] |>
   group_by(indication_m365_to_0) |>
   tally()
 #> # A query:  ?? x 2
-#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/RtmpiLBFuA/file22271e7498ad.duckdb]
+#> # Database: DuckDB 1.5.5 [unknown@Linux 6.17.0-1022-azure:R 4.6.1//tmp/Rtmpme5hBf/file22321a661e06.duckdb]
 #>   indication_m365_to_0         n
 #>   <chr>                    <dbl>
-#> 1 bronchitis                2615
-#> 2 sinusitis                  211
-#> 3 bronchitis and sinusitis   101
-#> 4 none                         4
+#> 1 bronchitis and sinusitis   101
+#> 2 none                         4
+#> 3 bronchitis                2615
+#> 4 sinusitis                  211
 #> 5 unknown                  10968
 ```
 

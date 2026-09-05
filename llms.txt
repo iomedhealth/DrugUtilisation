@@ -219,6 +219,8 @@ hierarchies
   : Generate a set of drug cohorts based on drug ingredients
 - [`generateAtcCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateAtcCohortSet.md)
   : Generate a set of drug cohorts based on ATC classification
+- [`generateEpisodeCohortSet()`](https://iomedhealth.github.io/DrugUtilisation/reference/generateEpisodeCohortSet.md)
+  : Generate a cohort set from the CDM episode table
 - [`erafyCohort()`](https://iomedhealth.github.io/DrugUtilisation/reference/erafyCohort.md)
   : Erafy a cohort_table collapsing records separated gapEra days or
   less.

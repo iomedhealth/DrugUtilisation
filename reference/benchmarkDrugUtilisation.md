@@ -54,7 +54,7 @@ cdm <- mockCdmFromDataset(datasetName = "GiBleed", source = "duckdb")
 #> ℹ Creating local <cdm_reference> object.
 #> ℹ Inserting <cdm_reference> into duckdb.
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpTLeUtZ/duckdb
+#> ℹ /tmp/Rtmpm6b7Hr/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -63,17 +63,17 @@ cdm <- mockCdmFromDataset(datasetName = "GiBleed", source = "duckdb")
 #> ℹ See ?duckdb_storage for details and alternatives.
 
 timings <- benchmarkDrugUtilisation(cdm)
-#> 04-09-2026 23:36:29 Benchmark get necessary concepts
-#> 04-09-2026 23:36:29 Benchmark generateDrugUtilisation
-#> 04-09-2026 23:36:32 Benchmark generateDrugUtilisation with numberExposures and
+#> 05-09-2026 10:25:27 Benchmark get necessary concepts
+#> 05-09-2026 10:25:27 Benchmark generateDrugUtilisation
+#> 05-09-2026 10:25:30 Benchmark generateDrugUtilisation with numberExposures and
 #> daysPrescribed
-#> 04-09-2026 23:36:34 Benchmark require
-#> 04-09-2026 23:36:36 Benchmark generateIngredientCohortSet
-#> 04-09-2026 23:36:40 Benchmark summariseDrugUtilisation
-#> 04-09-2026 23:36:45 Benchmark summariseDrugRestart
-#> 04-09-2026 23:36:47 Benchmark summariseProportionOfPatientsCovered
-#> 04-09-2026 23:36:48 Benchmark summariseTreatment
-#> 04-09-2026 23:36:51 Benchmark drop created tables
+#> 05-09-2026 10:25:32 Benchmark require
+#> 05-09-2026 10:25:34 Benchmark generateIngredientCohortSet
+#> 05-09-2026 10:25:38 Benchmark summariseDrugUtilisation
+#> 05-09-2026 10:25:44 Benchmark summariseDrugRestart
+#> 05-09-2026 10:25:46 Benchmark summariseProportionOfPatientsCovered
+#> 05-09-2026 10:25:46 Benchmark summariseTreatment
+#> 05-09-2026 10:25:50 Benchmark drop created tables
 
 timings
 #> # A tibble: 10 × 13
