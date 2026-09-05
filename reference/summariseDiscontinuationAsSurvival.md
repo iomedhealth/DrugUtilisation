@@ -119,7 +119,7 @@ result <- summariseDiscontinuationAsSurvival(cdm$cohort1)
 #> Getting overall estimates
 #> `eventgap`, `outcome_washout`, `censor_on_cohort_exit`, `follow_up_days`, and
 #> `minimum_survival_days` cast to character.
-#> ✔ Discontinuation analysis for cohort_2 completed in 2s.
+#> ✔ Discontinuation analysis for cohort_2 completed in 1s.
 #> ℹ Calculating discontinuation for cohort_3.
 #> ℹ Subsetting table to cohort of interest.
 #> ℹ Preparing discontinuation (outcome) cohort.
