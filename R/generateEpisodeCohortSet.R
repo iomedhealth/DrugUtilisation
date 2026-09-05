@@ -52,8 +52,17 @@ generateEpisodeCohortSet <- function(cdm,
   # 1. Input Validation
   cdm <- omopgenerics::validateCdmArgument(cdm)
   name <- omopgenerics::validateNameArgument(name, null = FALSE)
+
   if (!"episode" %in% names(cdm)) {
-    cli::cli_abort("`episode` table not found in cdm.")
+    dbCon <- attr(cdm, "dbcon")
+    cdmSchema <- attr(cdm, "cdm_schema")
+    if (!is.null(dbCon) && !is.null(cdmSchema) && DBI::dbExistsTable(dbCon, DBI::Id(schema = cdmSchema, table = "episode"))) {
+      cdm$episode <- dplyr::tbl(dbCon, DBI::Id(schema = cdmSchema, table = "episode"))
+    } else if (!is.null(dbCon) && DBI::dbExistsTable(dbCon, "episode")) {
+      cdm$episode <- dplyr::tbl(dbCon, "episode")
+    } else {
+      cli::cli_abort("`episode` table not found in cdm.")
+    }
   }
 
   omopgenerics::assertNumeric(episodeConceptId, null = TRUE)
@@ -199,7 +208,8 @@ generateEpisodeCohortSet <- function(cdm,
 
   cdm[[name]] <- omopgenerics::newCohortTable(
     cohortTable,
-    cohortSetRef = cohortSetRef
+    cohortSetRef = cohortSetRef,
+    .softValidation = TRUE
   )
 
   return(cdm)
