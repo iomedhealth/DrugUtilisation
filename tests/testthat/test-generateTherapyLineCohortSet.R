@@ -37,7 +37,8 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
   cdm <- mockDrugUtilisation() |> copyCdm()
 
   obs_dates <- cdm$observation_period |>
-    dplyr::filter(.data$person_id %in% c(3, 5)) |>
+    dplyr::mutate(duration = as.numeric(.data$observation_period_end_date - .data$observation_period_start_date)) |>
+    dplyr::filter(.data$duration >= 200) |>
     dplyr::group_by(.data$person_id) |>
     dplyr::summarise(
       start = min(.data$observation_period_start_date),
@@ -46,12 +47,13 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
     ) |>
     dplyr::collect()
 
-  obs_p1 <- obs_dates |> dplyr::filter(.data$person_id == 3)
-  obs_p2 <- obs_dates |> dplyr::filter(.data$person_id == 5)
+  pids <- obs_dates$person_id[1:2]
+  obs_p1 <- obs_dates |> dplyr::filter(.data$person_id == pids[1])
+  obs_p2 <- obs_dates |> dplyr::filter(.data$person_id == pids[2])
 
   treatments <- dplyr::tibble(
     cohort_definition_id = c(1, 2, 3, 4, 5, 6, 4, 1, 5, 6),
-    subject_id = c(3, 3, 3, 3, 3, 3, 3, 5, 5, 5),
+    subject_id = c(pids[1], pids[1], pids[1], pids[1], pids[1], pids[1], pids[1], pids[2], pids[2], pids[2]),
     cohort_start_date = c(
       obs_p1$start + 10, obs_p1$start + 20, obs_p1$start + 30, obs_p1$start + 30,
       obs_p1$start + 120, obs_p1$start + 130, obs_p1$start + 130,
@@ -59,8 +61,8 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
     ),
     cohort_end_date = c(
       obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50,
-      pmin(obs_p1$start + 150, obs_p1$end - 5), pmin(obs_p1$start + 150, obs_p1$end - 5), pmin(obs_p1$start + 150, obs_p1$end - 5),
-      obs_p2$start + 50, pmin(obs_p2$start + 150, obs_p2$end - 5), pmin(obs_p2$start + 150, obs_p2$end - 5)
+      obs_p1$start + 150, obs_p1$start + 150, obs_p1$start + 150,
+      obs_p2$start + 50, obs_p2$start + 150, obs_p2$start + 150
     )
   )
 
@@ -71,7 +73,7 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
 
   baseCohort <- dplyr::tibble(
     cohort_definition_id = 1,
-    subject_id = c(3, 5),
+    subject_id = c(pids[1], pids[2]),
     cohort_start_date = c(obs_p1$start + 5, obs_p2$start + 5),
     cohort_end_date = c(obs_p1$end - 5, obs_p2$end - 5)
   )
