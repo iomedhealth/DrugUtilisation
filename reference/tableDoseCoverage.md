@@ -90,8 +90,8 @@ result <- summariseDoseCoverage(cdm, 1125315)
 #> • daily_dose: count_missing, percentage_missing, mean, sd, q25, median, q75
 #> ! Table is collected to memory as not all requested estimates are supported on
 #>   the database side.
-#> → Start summary of data, at 2026-09-05 10:37:46.877875
-#> ✔ Summary finished, at 2026-09-05 10:37:47.272678
+#> → Start summary of data, at 2026-09-05 10:48:09.210827
+#> ✔ Summary finished, at 2026-09-05 10:48:09.618613
 
 tableDoseCoverage(result)
 #> cdm_name, ingredient_name, variable_name, variable_level, estimate_name, and
