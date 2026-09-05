@@ -59,8 +59,8 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
     ),
     cohort_end_date = c(
       obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50, obs_p1$start + 50,
-      obs_p1$start + 150, obs_p1$start + 150, obs_p1$start + 150,
-      obs_p2$start + 50, obs_p2$start + 150, obs_p2$start + 150
+      pmin(obs_p1$start + 150, obs_p1$end - 5), pmin(obs_p1$start + 150, obs_p1$end - 5), pmin(obs_p1$start + 150, obs_p1$end - 5),
+      obs_p2$start + 50, pmin(obs_p2$start + 150, obs_p2$end - 5), pmin(obs_p2$start + 150, obs_p2$end - 5)
     )
   )
 

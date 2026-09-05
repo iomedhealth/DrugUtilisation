@@ -39,6 +39,7 @@ reference:
   - generateDrugUtilisationCohortSet
   - generateIngredientCohortSet
   - generateAtcCohortSet
+  - generateEpisodeCohortSet
   - erafyCohort
   - cohortGapEra
 - subtitle: Generate and visualize Line of Therapy (LOT) cohorts
