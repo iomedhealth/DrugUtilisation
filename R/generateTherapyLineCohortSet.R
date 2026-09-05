@@ -610,6 +610,24 @@ processPatientLOT <- function(df, gapEra, maintenanceModalities, parsedRules) {
     matchRegimenName(d_list, parsedRules)
   })
 
+  # Collapse consecutive same-regimen lines for a patient
+  if (nrow(res) > 1) {
+    collapsed <- list()
+    curr <- res[1, , drop = FALSE]
+    for (k in 2:nrow(res)) {
+      next_row <- res[k, , drop = FALSE]
+      if (identical(curr$regimen_name, next_row$regimen_name)) {
+        curr$cohort_end_date <- max(curr$cohort_end_date, next_row$cohort_end_date)
+      } else {
+        collapsed[[length(collapsed) + 1]] <- curr
+        curr <- next_row
+      }
+    }
+    collapsed[[length(collapsed) + 1]] <- curr
+    res <- dplyr::bind_rows(collapsed)
+    res$line_number <- seq_len(nrow(res))
+  }
+
   res |>
     dplyr::select(
       "subject_id",
@@ -621,14 +639,41 @@ processPatientLOT <- function(df, gapEra, maintenanceModalities, parsedRules) {
 }
 
 matchRegimenName <- function(drugs, parsedRules) {
+  sorted_drugs <- sort(unique(tolower(trimws(drugs))))
+
+  # Default oncology regimen hierarchy ranking (lower number = higher priority)
+  default_rank <- c(
+    "dara_rvd" = 1, "dara-rvd" = 1, "dara_rd" = 2, "dara-rd" = 2, "dara_vd" = 3, "dara-vd" = 3,
+    "dara_vmp" = 4, "dara-vmp" = 4, "dara_cybord" = 5, "dara-cybord" = 5,
+    "isa_kd" = 6, "isa-kd" = 6, "isa_pd" = 7, "isa-pd" = 7,
+    "krd" = 8, "vtd" = 9, "rvd" = 10, "pvd" = 11, "pcd" = 12,
+    "vmp" = 13, "kd" = 14, "rd" = 15, "vd" = 16, "mp" = 17, "pd" = 18
+  )
+
+  # 1. Exact match against parsedRules
   if (!is.null(parsedRules) && length(parsedRules) > 0) {
-    sorted_drugs <- sort(unique(drugs))
     for (r_name in names(parsedRules)) {
-      r_drugs <- sort(unique(parsedRules[[r_name]]))
+      r_drugs <- sort(unique(tolower(trimws(parsedRules[[r_name]]))))
       if (length(sorted_drugs) == length(r_drugs) && all(sorted_drugs == r_drugs)) {
         return(r_name)
       }
     }
+    # Subset match against parsedRules
+    for (r_name in names(parsedRules)) {
+      r_drugs <- sort(unique(tolower(trimws(parsedRules[[r_name]]))))
+      if (all(r_drugs %in% sorted_drugs)) {
+        return(r_name)
+      }
+    }
   }
-  paste(sort(unique(drugs)), collapse = " + ")
+
+  # 2. Hierarchy ranking resolution for pre-classified regimen cohort names
+  matched_ranks <- default_rank[sorted_drugs]
+  if (any(!is.na(matched_ranks))) {
+    best_idx <- which.min(matched_ranks[!is.na(matched_ranks)])
+    best_regimen <- names(matched_ranks[!is.na(matched_ranks)])[best_idx]
+    return(best_regimen)
+  }
+
+  paste(sorted_drugs, collapse = " + ")
 }

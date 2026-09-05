@@ -52,7 +52,7 @@ cdm <- generateTherapyLineCohortSet(
   name = "lot_mm",
   cohort = "base_mm",
   treatmentCohortName = "tx_episodes",
-  gapEra = 60
+  gapEra = 180
 )
 
 # 5. Generate Plotly Sankey Widget & Save to HTML

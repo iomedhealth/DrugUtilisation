@@ -77,10 +77,10 @@ test_that("generateTherapyLineCohortSet Multiple Myeloma LOT & Regimen classific
   )
 
   cdm <- omopgenerics::insertTable(cdm, name = "base_mm", table = baseCohort)
-  cdm$base_mm <- omopgenerics::newCohortTable(cdm$base_mm)
+  cdm$base_mm <- omopgenerics::newCohortTable(cdm$base_mm, .softValidation = TRUE)
 
   cdm <- omopgenerics::insertTable(cdm, name = "mm_treatments", table = treatments)
-  cdm$mm_treatments <- omopgenerics::newCohortTable(cdm$mm_treatments, cohortSetRef = treatSet)
+  cdm$mm_treatments <- omopgenerics::newCohortTable(cdm$mm_treatments, cohortSetRef = treatSet, .softValidation = TRUE)
 
   mmRules <- list(
     "Dara-VRd" = c("daratumumab", "bortezomib", "lenalidomide", "dexamethasone"),
