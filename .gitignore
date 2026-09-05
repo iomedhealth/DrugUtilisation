@@ -10,3 +10,6 @@ inst/doc
 .quarto
 test_data/
 .specify/
+extras/*.html
+extras/*_files/
+

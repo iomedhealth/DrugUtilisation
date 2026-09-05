@@ -64,6 +64,6 @@ sankey <- plotTherapyLineSankey(
   includeEndOfFollowUp = TRUE
 )
 
-outputPath <- file.path(tempdir(), "mm_sankey_duckdb.html")
+outputPath <- file.path("extras", "mm_sankey_duckdb.html")
 saveWidget(sankey, file = outputPath, selfcontained = TRUE)
 cat("Sankey HTML saved to:", outputPath, "\n")
