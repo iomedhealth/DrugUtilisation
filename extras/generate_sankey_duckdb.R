@@ -46,12 +46,33 @@ cdm <- generateEpisodeCohortSet(
   episodeConceptId = 32531
 )
 
-# 4. Generate LOT Cohorts using DrugUtilisation native pipeline
+# 4. Define Regimen Rules (Hierarchy & Resolution) and Generate LOT Cohorts
+mmRules <- list(
+  "dara_rvd"    = c("dara_rvd", "rvd", "daratumumab"),
+  "dara_rd"     = c("dara_rd", "rd", "daratumumab"),
+  "dara_vd"     = c("dara_vd", "vd", "daratumumab"),
+  "dara_vmp"    = c("dara_vmp", "vmp", "daratumumab"),
+  "dara_cybord" = c("dara_cybord", "cybord", "daratumumab"),
+  "isa_kd"      = c("isa_kd", "kd", "isatuximab"),
+  "isa_pd"      = c("isa_pd", "pd", "isatuximab"),
+  "krd"         = c("krd", "carfilzomib"),
+  "vtd"         = c("vtd", "bortezomib"),
+  "rvd"         = c("rvd", "bortezomib", "lenalidomide"),
+  "pvd"         = c("pvd", "pomalidomide"),
+  "pcd"         = c("pcd", "pomalidomide"),
+  "vmp"         = c("vmp", "bortezomib"),
+  "kd"          = c("kd", "carfilzomib"),
+  "rd"          = c("rd", "lenalidomide"),
+  "vd"          = c("vd", "bortezomib"),
+  "mp"          = c("mp", "melphalan")
+)
+
 cdm <- generateTherapyLineCohortSet(
   cdm = cdm,
   name = "lot_mm",
   cohort = "base_mm",
   treatmentCohortName = "tx_episodes",
+  regimenRules = mmRules,
   gapEra = 180
 )
 
