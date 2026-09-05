@@ -29,7 +29,7 @@ The `DrugUtilisation` package provides two core functions for Line of Therapy an
 
 ---
 
-# Setting Up Multiple Myeloma Treatment Cohorts
+# 1. Quick-Start Example (Mock Data)
 
 Let's set up a mock OMOP CDM database containing key Multiple Myeloma (MM) treatment ingredients and a base patient cohort.
 
@@ -99,23 +99,7 @@ trt_set <- tibble(
 cdm <- insertTable(cdm = cdm, name = "mm_treatments", table = df_exp)
 cdm$mm_treatments <- cdm$mm_treatments |> newCohortTable(cohortSetRef = trt_set)
 
-cohortCount(cdm$mm_treatments)
-```
-
----
-
-# Generating Line of Therapy Subcohorts
-
-We call `generateTherapyLineCohortSet()` to map overlapping exposures into combination regimens and construct sequential lines of therapy.
-
-### Key Parameters:
-
-- **`cohort`**: Base patient population cohort table name (`"mm_base"`).
-- **`treatmentCohortName`**: Cohort table containing drug exposures (`"mm_treatments"`).
-- **`gapEra`**: Treatment interruption threshold (in days, e.g., 60). Gaps longer than `gapEra` trigger a line transition.
-- **`maintenanceModalities`**: Specifies single-agent modalities allowed to continue as maintenance without advancing the line number.
-
-```{r generate_lot, message = FALSE, warning = FALSE}
+# Generate Line of Therapy Subcohorts
 cdm <- generateTherapyLineCohortSet(
   cdm = cdm,
   name = "mm_lot_cohorts",
@@ -131,26 +115,88 @@ cdm$mm_lot_cohorts |>
 
 ---
 
-# Visualising Treatment Transitions with Sankey Diagrams
+# 2. Real-World Workflow with Concept Sets & DuckDB
 
-To inspect treatment patterns and transitions across therapy lines, `plotTherapyLineSankey()` generates an interactive Plotly Sankey diagram.
+In real-world OMOP CDM studies, base disease cohorts and treatment regimens are defined using concept sets and episode tables. The following pipeline (from `extras/generate_sankey_duckdb.R`) demonstrates the complete workflow on a DuckDB instance:
 
-### Key Design Features:
+```r
+library(DrugUtilisation)
+library(CDMConnector)
+library(omopgenerics)
+library(OmopHelpers)
+library(CohortConstructor)
+library(duckdb)
+library(htmlwidgets)
 
-- **Top Regimen Coverage (`coverageThreshold = 0.80`)**: At each line step, regimens representing the top $80\%$ cumulative volume are displayed individually, while long-tail regimens are grouped into `"Other Regimens"`.
-- **End of Follow-Up Stream**: Patients who discontinue treatment or exit follow-up transition into `"End of Follow-Up"`.
-- **Vertical Column Alignment**: Step positions ($x/y$ coordinates) are strictly enforced so that each therapy line forms a distinct vertical column.
+# Connect to DuckDB instance
+con <- dbConnect(duckdb(), "test_data/omop_1959_1786811115.duckdb")
+on.exit(dbDisconnect(con, shutdown = TRUE), add = TRUE)
 
-```{r plot_sankey, message = FALSE, warning = FALSE, eval = FALSE}
-# Generate interactive Sankey diagram
-p <- plotTherapyLineSankey(
-  cohort = cdm$mm_lot_cohorts,
-  maxLines = 4,
-  coverageThreshold = 0.80
+cdm <- cdmFromCon(con, cdmSchema = "cdm", writeSchema = "main")
+
+# 1. Build Base Multiple Myeloma Cohort (Concept Set 7343)
+mmCodelist <- OmopHelpers::getCodelistFromConceptSet(
+  conceptSetId = 7343,
+  con = con,
+  cdmSchema = "cdm"
 )
 
-p
+cdm$base_mm <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = mmCodelist,
+  name = "base_mm"
+)
+
+# 2. Extract Treatment Regimen Codelists (Concept Set IDs 7347-7378, 7483-7487, 11571-11573)
+regimenIds <- c(7347:7358, 7360:7378, 7483, 7485:7487, 11571:11573)
+rawCodelists <- lapply(regimenIds, function(id) {
+  OmopHelpers::getCodelistFromConceptSet(conceptSetId = id, con = con, cdmSchema = "cdm")
+})
+
+mergedRaw <- unlist(rawCodelists, recursive = FALSE)
+processedCodelists <- OmopHelpers::process_codelists(mergedRaw)
+regimenCodelist <- omopgenerics::newCodelist(processedCodelists)
+
+# 3. Generate Treatment Episode Cohort Set
+cdm <- generateEpisodeCohortSet(
+  cdm = cdm,
+  name = "tx_episodes",
+  conceptSet = regimenCodelist,
+  episodeConceptId = 32531
+)
+
+# 4. Generate Line of Therapy Cohorts
+cdm <- generateTherapyLineCohortSet(
+  cdm = cdm,
+  name = "lot_mm",
+  cohort = "base_mm",
+  treatmentCohortName = "tx_episodes",
+  gapEra = 60
+)
+
+# 5. Render Interactive Plotly Sankey & Save Widget
+sankey <- plotTherapyLineSankey(
+  cdm$lot_mm,
+  coverageThreshold = 0.80,
+  maxLines = 4,
+  minLinePatients = 5,
+  includeEndOfFollowUp = TRUE
+)
+
+outputPath <- file.path(tempdir(), "mm_sankey_duckdb.html")
+saveWidget(sankey, file = outputPath, selfcontained = TRUE)
 ```
+
+---
+
+# 3. Key Visualization Parameters
+
+When calling `plotTherapyLineSankey()`, you can fine-tune diagram layout and aggregation thresholds:
+
+- **`coverageThreshold = 0.80`**: At each line step, regimens representing the top $80\%$ cumulative volume are displayed individually, while long-tail regimens are grouped into `"Other Regimens"`.
+- **`maxLines = 4`**: Maximum number of therapy line steps to display ($1\text{L}$ through $4\text{L}$).
+- **`minLinePatients = 5`**: Minimum patient count required in a therapy line step to render the step column.
+- **`includeEndOfFollowUp = TRUE`**: Terminal nodes indicating patient attrition or end of observation following Line $L$.
 
 ---
 
